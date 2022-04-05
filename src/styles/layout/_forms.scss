@@ -1,0 +1,57 @@
+.doc-container {
+    padding-left: 5rem;
+    .doc-header {
+        margin: 3rem 0 2rem;
+        font-size: 3rem;
+    }
+
+    .doc-table{
+        width: 100%;
+        padding: 1rem;
+        text-align: center;
+
+        tr {
+            border-bottom: 1px;
+            border-style: solid;
+
+            th, td {
+                text-align: left;
+                padding: 1rem 2rem;
+            }
+        }
+
+        thead {
+            tr {
+                border-color: black;
+
+                th {
+                    &:first-child {
+                        span {
+                            display: none;
+                        }
+                    }
+
+                    &:not(:first-child){
+                        i {
+                            margin-left: 0.75rem;
+                        }
+                    }
+
+                    &:last-child {
+                        i {
+                            margin-right: 0.75rem;
+                            margin-left: 0;
+                        }
+                    }
+                }
+            }
+        }
+        
+
+        tbody {
+            tr {
+                border-color: lightgrey;
+            }
+        }
+    }
+}
