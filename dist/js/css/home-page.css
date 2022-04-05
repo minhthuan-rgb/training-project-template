@@ -101,36 +101,47 @@ a {
   background: #dcdde1;
   display: flex;
   align-items: center;
+}
+.nav-container .nav-icon {
+  background: #dcdde1;
+  border: none;
+  display: none;
+  height: 5rem;
+}
+.nav-container .nav-icon i {
+  font-size: 1.75rem;
+}
+.nav-container .nav-list {
+  display: flex;
+  align-items: center;
   padding-left: 1rem;
   overflow: hidden;
+  transition: all, 0.1s;
 }
-.nav-container .nav-item {
+.nav-container .nav-list .nav-item {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.nav-container .nav-item:not(:last-child) {
+.nav-container .nav-list .nav-item:not(:last-child) {
   margin-right: 0.5rem;
 }
-.nav-container .nav-item.icon {
-  display: none;
-}
-.nav-container .nav-item a {
+.nav-container .nav-list .nav-item a {
   height: 5rem;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0 2.5rem;
 }
-.nav-container .nav-item a i:first-child {
+.nav-container .nav-list .nav-item a i:first-child {
   color: #b53471;
   margin-right: 0.75rem;
 }
-.nav-container .nav-item a i:last-child {
+.nav-container .nav-list .nav-item a i.dp-ico {
   margin-left: 0.75rem;
 }
-.nav-container .nav-item a:hover {
-  background: lightcoral;
+.nav-container .nav-list .nav-item a:hover {
+  background: #fab1a0;
   color: #2c3e50;
 }
 
@@ -138,11 +149,31 @@ a {
   .nav-container {
     justify-content: flex-end;
   }
-  .nav-container .nav-item {
+  .nav-container .nav-list .nav-item {
     display: none;
   }
-  .nav-container .nav-item.icon {
+  .nav-container .nav-icon {
     display: block;
+  }
+  .nav-container .nav-icon:hover ~ .nav-list {
+    background: #cfd0d2;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem 1rem;
+    position: absolute;
+    top: 3rem;
+    right: 2rem;
+    border-radius: 0.5rem;
+  }
+  .nav-container .nav-icon:hover ~ .nav-list .nav-item {
+    display: block;
+    text-align: left;
+  }
+  .nav-container .nav-icon:hover ~ .nav-list .nav-item:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+  .nav-container .nav-icon:hover ~ .nav-list .nav-item:last-child {
+    align-self: center;
   }
 }
 .doc-container {

@@ -3,72 +3,97 @@
   background: #dcdde1;
   display: flex;
   align-items: center;
-  padding-left: 1rem;
-  overflow: hidden;
 
-  .nav-item {
+  .nav-icon {
+    background: #dcdde1;
+    border: none;
+    display: none;
+    height: 5rem;
+
+    i {
+      font-size: 1.75rem;
+    }
+  }
+
+  .nav-list {
     display: flex;
-    justify-content: center;
     align-items: center;
+    padding-left: 1rem;
+    overflow: hidden;
+    transition: all, 0.1s;
 
-    &:not(:last-child) {
-      margin-right: 0.5rem;
-    }
-
-    &.icon {
-      display: none;
-    }
-
-    a {
-      height: 5rem;
+    .nav-item {
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 0 2.5rem;
-      i {
-        &:first-child {
-          color: #b53471;
-          margin-right: 0.75rem;
-        }
 
-        &:last-child {
-          margin-left: 0.75rem;
-        }
+      &:not(:last-child) {
+        margin-right: 0.5rem;
       }
 
-      &:hover {
-        background: lightcoral;
-        color: #2c3e50;
+      a {
+        height: 5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 2.5rem;
+        i {
+          &:first-child {
+            color: #b53471;
+            margin-right: 0.75rem;
+          }
+
+          &.dp-ico {
+            margin-left: 0.75rem;
+          }
+        }
+
+        &:hover {
+          background: #fab1a0;
+          color: #2c3e50;
+        }
       }
     }
   }
 }
 
 @media only screen and (max-width: 767.98px) {
-    // .nav-container {
-    //   flex-direction: column;
-    //   align-items: flex-start;
-    //   justify-content: center;
-  
-    //   .nav-item {
-    //     display: block;
-  
-    //     &:not(:last-child) {
-    //       margin-bottom: 0.5rem;
-    //     }
-    //   }
-    // }
-
   .nav-container {
     justify-content: flex-end;
-    .nav-item {
+
+    .nav-list .nav-item {
       display: none;
+    }
 
-      &.icon {
-        display: block;
+    .nav-icon {
+      display: block;
 
-        // &:hover {
-        // }
+      &:hover {
+        & {
+          ~ .nav-list {
+            background: #cfd0d2;
+            flex-direction: column;
+            align-items:flex-start;
+            padding: 1.5rem 1rem;
+            position: absolute;
+            top: 3rem;
+            right: 2rem;
+            border-radius: 0.5rem;
+
+            .nav-item {
+              display: block;
+              text-align: left;
+
+              &:not(:last-child) {
+                margin-bottom: 0.5rem;
+              }
+
+              &:last-child {
+                align-self: center;
+              }
+            }
+          }
+        }
       }
     }
   }
