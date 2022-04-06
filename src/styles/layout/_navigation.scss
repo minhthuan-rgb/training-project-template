@@ -1,56 +1,58 @@
-.nav-container {
+.nav {
   width: 100%;
-  background: #dcdde1;
+  background: $colorBGNav;
   display: flex;
   align-items: center;
+  @include draw-border($colorNormalText, $widthBorder, top);
 
-  .nav-icon {
-    background: #dcdde1;
-    border: none;
-    display: none;
-    height: 5rem;
-
-    i {
-      font-size: 1.75rem;
-    }
-  }
-
-  .nav-list {
+  &-list {
     display: flex;
     align-items: center;
     padding-left: 1rem;
     overflow: hidden;
-    transition: all, 0.1s;
+    transition: all 0.1s;
 
-    .nav-item {
+    &-item {
       display: flex;
       justify-content: center;
       align-items: center;
 
       &:not(:last-child) {
-        margin-right: 0.5rem;
+        margin-right: $marginNavItem;
+      }
+
+      &:last-child {
+        a {
+          i {
+            color: $colorNormalText;
+          }
+        }
       }
 
       a {
-        height: 5rem;
+        height: $heightNav;
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 0 2.5rem;
+        white-space: nowrap;
         i {
           &:first-child {
-            color: #b53471;
-            margin-right: 0.75rem;
+            &:not(.fa-file-excel)
+            {
+              color: $colorNavIcon;
+            }
+            margin-right: $marginNavItem;
           }
 
           &.dp-ico {
-            margin-left: 0.75rem;
+            margin-left: $marginNavItem;
           }
         }
 
         &:hover {
-          background: #fab1a0;
-          color: #2c3e50;
+          background: $colorBGNavHover;
+          color: $colorTextNavHover;
         }
       }
     }
@@ -58,42 +60,13 @@
 }
 
 @media only screen and (max-width: 767.98px) {
-  .nav-container {
+  .nav {
     justify-content: flex-end;
+    border-top: none;
 
-    .nav-list .nav-item {
-      display: none;
-    }
-
-    .nav-icon {
-      display: block;
-
-      &:hover {
-        & {
-          ~ .nav-list {
-            background: #cfd0d2;
-            flex-direction: column;
-            align-items:flex-start;
-            padding: 1.5rem 1rem;
-            position: absolute;
-            top: 3rem;
-            right: 2rem;
-            border-radius: 0.5rem;
-
-            .nav-item {
-              display: block;
-              text-align: left;
-
-              &:not(:last-child) {
-                margin-bottom: 0.5rem;
-              }
-
-              &:last-child {
-                align-self: center;
-              }
-            }
-          }
-        }
+    &-list {
+      &-item {
+        display: none;
       }
     }
   }

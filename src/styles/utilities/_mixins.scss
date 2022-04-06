@@ -1,0 +1,37 @@
+@mixin draw-border ($color, $width, $position){
+    @if($option == full){
+        border: $width $style $color;
+    } @else {
+        border-#{$i}: $width $style $color;
+    }
+}
+
+@mixin table-border-color ($color){
+    @include draw-border($color, $widthBorder, bottom);
+}
+
+@mixin desktop-table-config{ 
+    th, td {
+        text-align: left;
+        padding: 1rem;
+        white-space: nowrap;
+    }
+}
+
+@mixin mobile-table-config {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+    
+    tr {
+        @include draw-border($colorItemBorder, $widthBorder, full);
+        margin-bottom: 2.5rem;
+        border-top: none;
+    }
+}
+
+@mixin mobile-table-header-config {
+    @for $i from 1 through length($listTableHeader){
+        &:nth-of-type(#{$i}):before { content: nth($listTableHeader, $i); }
+    }
+}

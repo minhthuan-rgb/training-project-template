@@ -1,0 +1,34 @@
+//Dimension
+$widthBorder : 1px;
+$heightNav: 5rem;
+
+//Spacing 
+$marginNavItem: 0.75rem;
+
+//LineHeight
+$lineHeight: 1.5;
+
+//Color
+$colorHeaderBorder : black;
+$colorItemBorder: lightgrey;
+$colorFolder: #fbc531;
+$colorExcel: #27ae60;
+$colorNavIcon:#b53471;
+$colorBGNav: #dcdde1;
+$colorBGNavHover: #b2bec3;
+$colorTextNavHover: #2c3e50;
+$colorNormalText: #7f8c8d;
+$colorRecentHint: #ff7675;
+$colorNavHoverBorder: #020505;
+
+//Font
+$fontFamily: "Roboto", sans-serif;
+$fontSizeHeaderDesktop: 3rem;
+$fontSizeTextDesktop: 1.6rem;
+$fontSizeHeaderMobile: 2rem;
+$fontSizeTextMobile: 1.3rem;
+$fontSizeNavIcon: 1.75rem;
+$fontSizeRecentHint: 0.85rem;
+
+//List
+$listTableHeader: ("File Type" "Name" "Modified" "Modified By");

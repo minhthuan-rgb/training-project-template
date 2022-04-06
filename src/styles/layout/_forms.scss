@@ -1,57 +1,108 @@
-.doc-container {
-    padding-left: 5rem;
-    .doc-header {
-        margin: 3rem 0 2rem;
-        font-size: 3rem;
+.doc {
+  width: 90%;
+  margin: 0 auto;
+  &-header {
+    margin: 3rem 0 2rem;
+    font-size: $fontSizeHeaderDesktop;
+  }
+
+  &-table {
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+    @include desktop-table-config;
+
+    thead {
+      tr {
+        @include draw-border($colorHeaderBorder, $widthBorder, bottom);
+
+        th {
+          &:not(:first-child) {
+            i {
+              margin-left: 0.75rem;
+            }
+          }
+
+          &:last-child {
+            i {
+              margin-right: 0.75rem;
+              margin-left: 0;
+            }
+          }
+        }
+      }
     }
 
-    .doc-table{
-        width: 100%;
-        padding: 1rem;
-        text-align: center;
+    tbody {
+      tr {
+        @include draw-border($colorItemBorder, $widthBorder, bottom);
 
-        tr {
-            border-bottom: 1px;
-            border-style: solid;
-
-            th, td {
-                text-align: left;
-                padding: 1rem 2rem;
+        td:nth-child(2){
+            i{
+                font-size: $fontSizeRecentHint;
+                vertical-align: text-top;
             }
         }
+      }
+    }
+  }
+}
 
-        thead {
-            tr {
-                border-color: black;
+@media only screen and (max-width: 767.98px) {
+  .doc {
+    @include mobile-table-config;
+    font-size: $fontSizeTextMobile;
 
-                th {
-                    &:first-child {
-                        span {
-                            display: none;
-                        }
-                    }
+    &-header {
+      margin: 1.5rem 0 0;
+      font-size: $fontSizeHeaderMobile;
+    }
 
-                    &:not(:first-child){
-                        i {
-                            margin-left: 0.75rem;
-                        }
-                    }
+    &-table {
+      thead {
+        display: none;
+      }
 
-                    &:last-child {
-                        i {
-                            margin-right: 0.75rem;
-                            margin-left: 0;
-                        }
-                    }
+      tbody {
+        tr {
+          td {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+
+            &:last-child {
+              display: none;
+            }
+
+            &:nth-child(2){
+                i {
+                    display: none;
                 }
             }
-        }
-        
 
-        tbody {
-            tr {
-                border-color: lightgrey;
+            &:not(:nth-last-child(2)) {
+                @include draw-border($colorItemBorder, $widthBorder, bottom);
             }
+
+            &:first-child {
+              background: $colorBGNav;
+
+              &:before {
+                flex-basis: 100%;
+              }
+            }
+
+            @include mobile-table-header-config;
+
+            &:before {
+              flex-basis: 30%;
+              padding-left: 1rem;
+              margin-right: 2rem;
+              font-weight: bold;
+            }
+          }
         }
+      }
     }
+  }
 }
