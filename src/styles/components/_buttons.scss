@@ -1,53 +1,39 @@
-&-icon {
-  background: $colorBGNav;
-  @include draw-border($colorNormalText, $widthBorder, full);
-  display: none;
-  height: 3rem;
-  width: 5rem;
+.nav {
+  &-icon {
+    background: $colorBGNav;
+    border-radius: 0.5rem;
+    display: none;
+    height: $heightNavIcon;
+    width: $widthNavIcon;
 
-  i {
-    font-size: $fontSizeNavIcon;
+    @include draw-border(
+      $defaultWidthBorder,
+      $colorNavHoverBorder,
+      full
+    );
+
+    i {
+      font-size: $fontSizeNavIcon;
+    }
   }
 }
 
 @media only screen and (max-width: 767.98px) {
-  &-icon {
-    display: block;
+  .nav {
+    &-icon {
+      display: block;
+      margin-right: $defaultSpacing;
+    }
 
     &:hover {
-      & {
-        ~ .nav-list {
-          width: 90%;
-          background: $colorBGNav;
-          flex-direction: column;
-          align-items: flex-start;
-          padding: 1.5rem 1rem;
-          position: absolute;
-          top: 5rem;
-          right: 5%;
-          border-radius: 0.5rem;
-          @include draw-border($colorNormalText, $widthBorder, top);
+      .nav-list {
+        display: block;
 
-          .nav-list-item {
-            display: block;
-            text-align: left;
-
-            &:not(:last-child) {
-              margin-bottom: $marginNavItem;
-            }
-
-            &:last-child {
-              align-self: flex-start;
-
-              a {
-                i {
-                  color: $colorNormalText;
-                  margin-left: 0;
-                }
-              }
-            }
-          }
-        }
+        @include draw-border(
+          $defaultWidthBorder,
+          $colorNormalText,
+          top
+        );
       }
     }
   }

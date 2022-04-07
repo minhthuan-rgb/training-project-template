@@ -1,28 +1,49 @@
-//Dimension
-$widthBorder : 1px;
-$heightNav: 5rem;
+//Color Palettes
+$colorBlack: black;
+$colorLightGrey: #bdc3c7;
+$colorDarkYellow: #fbc531;
+$colorGreen: #27ae60;
+$colorPink: #b53471;
+$colorWhiteGrey: #dcdde1;
+$colorBlueGrey: #b2bec3;
+$colorDarkGrey: #2c3e50;
+$colorGrey: #7f8c8d;
+$colorPinkGlamour: #ff7675;
+$colorDarkBlueGrey: #34495e;
 
-//Spacing 
-$marginNavItem: 0.75rem;
+//Color Template
+$colorBGPrimary: $colorWhiteGrey;
+$colorBGSecondary: $colorBlueGrey;
+$colorTextPrimary: $colorGrey;
+$colorTextSecondary: $colorDarkGrey;
+
+//Dimension
+$defaultWidthBorder: 1px;
+$heightNav: 5rem;
+$heightNavIcon: 3rem;
+$widthNavIcon: 5rem;
+
+//Spacing
+$defaultSpacing: 1rem;
 
 //LineHeight
 $lineHeight: 1.5;
 
 //Color
-$colorHeaderBorder : black;
-$colorItemBorder: lightgrey;
-$colorFolder: #fbc531;
-$colorExcel: #27ae60;
-$colorNavIcon:#b53471;
-$colorBGNav: #dcdde1;
-$colorBGNavHover: #b2bec3;
-$colorTextNavHover: #2c3e50;
-$colorNormalText: #7f8c8d;
-$colorRecentHint: #ff7675;
-$colorNavHoverBorder: #020505;
+$colorHeaderBorder: $colorBlack;
+$colorItemBorder: $colorLightGrey;
+$colorFolder: $colorDarkYellow;
+$colorExcel: $colorGreen;
+$colorNavIcon: $colorPink;
+$colorBGNav: $colorBGPrimary;
+$colorBGNavHover: $colorBGSecondary;
+$colorNormalText: $colorTextPrimary;
+$colorTextNavHover: $colorTextSecondary;
+$colorRecentHint: $colorPinkGlamour;
+$colorNavHoverBorder: $colorDarkBlueGrey;
 
 //Font
-$fontFamily: "Roboto", sans-serif;
+$fontFamily: 'Roboto', sans-serif;
 $fontSizeHeaderDesktop: 3rem;
 $fontSizeTextDesktop: 1.6rem;
 $fontSizeHeaderMobile: 2rem;
@@ -31,4 +52,4 @@ $fontSizeNavIcon: 1.75rem;
 $fontSizeRecentHint: 0.85rem;
 
 //List
-$listTableHeader: ("File Type" "Name" "Modified" "Modified By");
+$listTableHeader: ('File Type', 'Name', 'Modified', 'Modified By');

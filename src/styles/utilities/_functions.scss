@@ -1,0 +1,7 @@
+@function getBorderWidth($ratio) {
+  @return $defaultWidthBorder * $ratio;
+}
+
+@function getSpacing($ratio) {
+  @return $defaultSpacing * $ratio;
+}

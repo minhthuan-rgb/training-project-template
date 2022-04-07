@@ -26,56 +26,50 @@ a {
 
 .nav {
   width: 100%;
-  height: 5rem;
   background: #dcdde1;
-  display: flex;
-  align-items: center;
   border-top: 1px solid #7f8c8d;
-}
-.nav-icon {
-  background: #dcdde1;
-  border: 1px solid #020505;
-  display: none;
-  height: 3rem;
-  width: 5rem;
-}
-.nav-icon i {
-  font-size: 1.75rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  justify-content: flex-start;
 }
 .nav-list {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  padding-left: 1rem;
+  justify-content: center;
+  padding: 0 1rem;
   overflow: hidden;
   transition: all 0.1s;
 }
 .nav-list-item {
   display: flex;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
 }
 .nav-list-item:not(:last-child) {
-  margin-right: 0.5rem;
-}
-.nav-list-item:last-child a i {
-  color: #7f8c8d;
+  margin-right: 0.75rem;
 }
 .nav-list-item a {
-  height: 5rem;
   display: flex;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
+  height: 5rem;
   padding: 0 2.5rem;
   white-space: nowrap;
 }
 .nav-list-item a i:first-child {
   margin-right: 0.75rem;
 }
-.nav-list-item a i:first-child:not(.fa-file-excel) {
+.nav-list-item a i:first-child:not(.fa-file-excel, .dp-ico) {
   color: #b53471;
 }
 .nav-list-item a i.dp-ico {
   margin-left: 0.75rem;
+  color: #7f8c8d;
 }
 .nav-list-item a:hover {
   background: #b2bec3;
@@ -84,16 +78,12 @@ a {
 
 @media only screen and (max-width: 767.98px) {
   .nav {
+    height: 5rem;
     justify-content: flex-end;
     border-top: none;
+    position: relative;
   }
-  .nav-list-item {
-    display: none;
-  }
-  .nav-icon {
-    display: block;
-  }
-  .nav-icon:hover ~ .nav-list {
+  .nav-list {
     width: 90%;
     background: #dcdde1;
     flex-direction: column;
@@ -102,21 +92,22 @@ a {
     position: absolute;
     top: 5rem;
     right: 5%;
-    border-radius: 0.5rem;
-    border-top: 1px solid #7f8c8d;
+    display: none;
+    border-radius: 0 0 0.5rem 0.5rem;
+    z-index: 1;
   }
-  .nav-icon:hover ~ .nav-list .nav-list-item {
+  .nav-list-item {
+    width: 100%;
     display: block;
     text-align: left;
   }
-  .nav-icon:hover ~ .nav-list .nav-list-item:not(:last-child) {
-    margin-bottom: 0.5rem;
+  .nav-list-item a {
+    justify-content: flex-start;
   }
-  .nav-icon:hover ~ .nav-list .nav-list-item:last-child {
-    align-self: flex-start;
+  .nav-list-item:not(:last-child) {
+    margin-bottom: 0.75rem;
   }
-  .nav-icon:hover ~ .nav-list .nav-list-item:last-child a i {
-    color: #7f8c8d;
+  .nav-list-item:last-child a i {
     margin-left: 0;
   }
 }
@@ -133,7 +124,8 @@ a {
   padding: 1rem;
   text-align: center;
 }
-.doc-table th, .doc-table td {
+.doc-table th,
+.doc-table td {
   text-align: left;
   padding: 1rem;
   white-space: nowrap;
@@ -141,15 +133,15 @@ a {
 .doc-table thead tr {
   border-bottom: 1px solid black;
 }
+.doc-table tbody tr {
+  border-bottom: 0.5px solid #bdc3c7;
+}
 .doc-table thead tr th:not(:first-child) i {
   margin-left: 0.75rem;
 }
 .doc-table thead tr th:last-child i {
   margin-right: 0.75rem;
   margin-left: 0;
-}
-.doc-table tbody tr {
-  border-bottom: 1px solid lightgrey;
 }
 .doc-table tbody tr td:nth-child(2) i {
   font-size: 0.85rem;
@@ -160,13 +152,19 @@ a {
   .doc {
     font-size: 1.3rem;
   }
-  .doc table, .doc thead, .doc tbody, .doc th, .doc td, .doc tr {
+  .doc table,
+.doc thead,
+.doc tbody,
+.doc th,
+.doc td,
+.doc tr {
     display: block;
   }
   .doc tr {
-    border: 1px solid lightgrey;
-    margin-bottom: 2.5rem;
+    border: 1px solid #bdc3c7;
     border-top: none;
+    margin-bottom: 2.5rem;
+    overflow: auto;
   }
   .doc-header {
     margin: 1.5rem 0 0;
@@ -177,8 +175,10 @@ a {
   }
   .doc-table tbody tr td {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    overflow: hidden;
+    justify-content: center;
+    justify-content: flex-start;
   }
   .doc-table tbody tr td:last-child {
     display: none;
@@ -187,13 +187,19 @@ a {
     display: none;
   }
   .doc-table tbody tr td:not(:nth-last-child(2)) {
-    border-bottom: 1px solid lightgrey;
+    border-bottom: 1px solid #bdc3c7;
   }
   .doc-table tbody tr td:first-child {
     background: #dcdde1;
   }
   .doc-table tbody tr td:first-child:before {
     flex-basis: 100%;
+  }
+  .doc-table tbody tr td:before {
+    flex-basis: 25%;
+    padding-left: 1rem;
+    margin-right: 2rem;
+    font-weight: bold;
   }
   .doc-table tbody tr td:nth-of-type(1):before {
     content: "File Type";
@@ -207,11 +213,27 @@ a {
   .doc-table tbody tr td:nth-of-type(4):before {
     content: "Modified By";
   }
-  .doc-table tbody tr td:before {
-    flex-basis: 30%;
-    padding-left: 1rem;
-    margin-right: 2rem;
-    font-weight: bold;
+}
+.nav-icon {
+  background: #dcdde1;
+  border-radius: 0.5rem;
+  display: none;
+  height: 3rem;
+  width: 5rem;
+  border: 1px solid #34495e;
+}
+.nav-icon i {
+  font-size: 1.75rem;
+}
+
+@media only screen and (max-width: 767.98px) {
+  .nav-icon {
+    display: block;
+    margin-right: 1rem;
+  }
+  .nav:hover .nav-list {
+    display: block;
+    border-top: 1px solid #7f8c8d;
   }
 }
 

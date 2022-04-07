@@ -1,37 +1,69 @@
-@mixin draw-border ($color, $width, $position){
-    @if($option == full){
-        border: $width $style $color;
-    } @else {
-        border-#{$i}: $width $style $color;
-    }
+@mixin draw-border($width, $color, $position) {
+  @if ($position == full) {
+    border: $width solid $color;
+  } @else {
+    border-#{$position}: $width solid $color;
+  }
 }
 
-@mixin table-border-color ($color){
-    @include draw-border($color, $widthBorder, bottom);
-}
+@mixin desktop-table-config {
+  th,
+  td {
+    text-align: left;
+    padding: $defaultSpacing;
+    white-space: nowrap;
+  }
 
-@mixin desktop-table-config{ 
-    th, td {
-        text-align: left;
-        padding: 1rem;
-        white-space: nowrap;
+  thead {
+    tr {
+      @include draw-border(
+        $defaultWidthBorder,
+        $colorHeaderBorder,
+        bottom
+      );
     }
+  }
+
+  tbody {
+    tr {
+      @include draw-border(
+        getBorderWidth(0.5),
+        $colorItemBorder,
+        bottom
+      );
+    }
+  }
 }
 
 @mixin mobile-table-config {
-    table, thead, tbody, th, td, tr {
-        display: block;
-    }
-    
-    tr {
-        @include draw-border($colorItemBorder, $widthBorder, full);
-        margin-bottom: 2.5rem;
-        border-top: none;
-    }
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  tr {
+    @include draw-border($defaultWidthBorder, $colorItemBorder, full);
+    border-top: none;
+    margin-bottom: getSpacing(2.5);
+    overflow: auto;
+  }
 }
 
 @mixin mobile-table-header-config {
-    @for $i from 1 through length($listTableHeader){
-        &:nth-of-type(#{$i}):before { content: nth($listTableHeader, $i); }
+  @for $i from 1 through length($listTableHeader) {
+    &:nth-of-type(#{$i}):before {
+      content: nth($listTableHeader, $i);
     }
+  }
+}
+
+@mixin flex-config($direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: center;
+  justify-content: center;
 }

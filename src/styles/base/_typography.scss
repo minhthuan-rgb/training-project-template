@@ -1,25 +1,25 @@
 body {
-    width: 100%;
-    height: 100%;
-    font-size: $fontSizeTextDesktop;
-    color: $colorNormalText;
-    font-family: $fontFamily;
-    line-height: $lineHeight;
+  width: 100%;
+  height: 100%;
+  font-size: $fontSizeTextDesktop;
+  color: $colorNormalText;
+  font-family: $fontFamily;
+  line-height: $lineHeight;
 }
 
 a {
-    color: $colorNormalText;
-    text-decoration: none;
+  color: $colorNormalText;
+  text-decoration: none;
 }
 
 .fa-folder-open {
-    color: $colorFolder;
+  color: $colorFolder;
 }
 
 .fa-file-excel {
-    color: $colorExcel;
+  color: $colorExcel;
 }
 
 .fa-yelp {
-    color: $colorRecentHint;
+  color: $colorRecentHint;
 }
