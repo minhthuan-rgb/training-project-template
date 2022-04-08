@@ -84,14 +84,13 @@ a {
     position: relative;
   }
   .nav-list {
-    width: 90%;
+    width: 100%;
     background: #dcdde1;
     flex-direction: column;
     align-items: flex-start;
     padding: 1.5rem 1rem;
     position: absolute;
     top: 5rem;
-    right: 5%;
     display: none;
     border-radius: 0 0 0.5rem 0.5rem;
     z-index: 1;
@@ -169,6 +168,7 @@ a {
   .doc-header {
     margin: 1.5rem 0 0;
     font-size: 2rem;
+    padding-left: 1rem;
   }
   .doc-table thead {
     display: none;

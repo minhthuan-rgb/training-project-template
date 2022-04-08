@@ -1,48 +1,53 @@
+// @media only screen and (min-width: 767.98px) 
 .doc {
-  width: 90%;
-  margin: 0 auto;
-  &-header {
-    margin: getSpacing(3) 0 getSpacing(2);
-    font-size: $fontSizeHeaderDesktop;
-  }
+    width: 90%;
+    margin: 0 auto;
+    &-header {
+      margin: getSpacing(3) 0 getSpacing(2);
+      font-size: $fontSizeHeaderDesktop;
+    }
 
-  &-table {
-    width: 100%;
-    padding: $defaultSpacing;
-    text-align: center;
-    @include desktop-table-config;
+    &-table {
+      width: 100%;
+      padding: $defaultSpacing;
+      text-align: center;
+      @include desktop-table-config;
 
-    thead {
-      tr {
-        th {
-          &:not(:first-child) {
-            i {
-              margin-left: getSpacing(0.75);
+      thead {
+        tr {
+          th {
+            &:not(:first-child) {
+              i {
+                margin-left: getSpacing(0.75);
+              }
+            }
+
+            &:last-child {
+              i {
+                margin-right: getSpacing(0.75);
+                margin-left: 0;
+
+                @media only screen and (max-width: 767.98px) {
+                  //Code here
+                }
+              }
             }
           }
+        }
+      }
 
-          &:last-child {
+      tbody {
+        tr {
+          td:nth-child(2) {
             i {
-              margin-right: getSpacing(0.75);
-              margin-left: 0;
+              font-size: $fontSizeRecentHint;
+              vertical-align: text-top;
             }
           }
         }
       }
     }
-
-    tbody {
-      tr {
-        td:nth-child(2) {
-          i {
-            font-size: $fontSizeRecentHint;
-            vertical-align: text-top;
-          }
-        }
-      }
-    }
   }
-}
 
 @media only screen and (max-width: 767.98px) {
   .doc {
@@ -52,6 +57,7 @@
     &-header {
       margin: getSpacing(1.5) 0 0;
       font-size: $fontSizeHeaderMobile;
+      padding-left: $defaultSpacing;
     }
 
     &-table {
