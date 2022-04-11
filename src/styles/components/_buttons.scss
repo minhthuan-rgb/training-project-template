@@ -1,7 +1,7 @@
 .nav {
   &-icon {
     background: $colorBGNav;
-    border-radius: 0.5rem;
+    border-radius: $defaultBorderRadius;
     display: none;
     height: $heightNavIcon;
     width: $widthNavIcon;
@@ -14,6 +14,101 @@
 
     i {
       font-size: $fontSizeNavIcon;
+    }
+  }
+
+  &-list {
+    &-item {
+      &.dropdown {
+        position: relative;
+
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          top: $heightNav;
+          background: $colorBGNav;
+          min-width: 100%;
+          box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+          z-index: 1;
+
+          a {
+            @include flex-config;
+            justify-content: flex-start;
+
+            &:hover {
+              background-color: $colorBGNavHover;
+            }
+          }
+        }
+
+        &:hover {
+          .dropdown-content {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}
+
+.modal {
+  width: 70%;
+  margin: 0 auto;
+  background: $colorBGNav;
+  padding: getSpacing(3.5);
+  font-size: $fontSizeTextDesktop;
+  border-radius: $defaultBorderRadius;
+
+  @media only screen and (max-width: 767.98px) {
+    font-size: $fontSizeTextMobile;
+  }
+
+  &-content {
+    &-header {
+      margin-bottom: getSpacing(2);
+      @include flex-config;
+      
+      .btn-close {
+        background: transparent;
+        border: none;
+      }
+
+      h2 {
+        flex-basis: 100%;
+        text-align: center;
+        font-weight: bold;
+      }
+    }
+
+    &-body {
+      .form-group{
+        height: $heightModalInput;
+        margin-bottom: getSpacing(0.75);
+        @include flex-config;
+        justify-content: flex-start;
+
+        label {
+          flex-basis: 30%;
+          max-width: 30%;
+          height: 100%;
+          white-space: nowrap;
+          padding-right: $defaultSpacing;
+          @include flex-config;
+          justify-content: flex-start;
+        }
+
+        .form-control {
+          flex-basis: 70%;
+          max-width: 70%;
+          height: 100%;
+          border-radius: getBorderRadius(0.5);
+          @include draw-border($defaultWidthBorder, $colorBlack, full);
+
+          &:disabled {
+            background: $colorWhiteSmoke;
+          }
+        }
+      }
     }
   }
 }

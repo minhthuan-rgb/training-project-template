@@ -38,10 +38,42 @@
 
       tbody {
         tr {
-          td:nth-child(2) {
-            i {
-              font-size: $fontSizeRecentHint;
-              vertical-align: text-top;
+          td {
+            &:nth-child(2) {
+              i {
+                font-size: $fontSizeRecentHint;
+                vertical-align: text-top;
+              }
+            }
+
+            &:nth-last-child(2) {
+              .btn {
+                padding: getSpacing(0.25) getSpacing(0.5);
+                border-radius: getBorderRadius(0.5);
+                width: $widthActionBtn;
+                height: $heightActionBtn;
+                font-size: $fontSizeTextMobile;
+                @include draw-border($defaultWidthBorder, transparent, full);
+                
+                &.btn-edit {
+                  margin-right:getSpacing(0.5);
+                  background: $colorFadedPoster;
+                  border-color: $colorRobinEggBlue;
+
+                  &:hover {
+                    background: $colorMintLeaf;
+                  }
+                }
+
+                &.btn-delete {
+                  background: $colorPinkGlamour;
+                  border: $colorOrangeVille;
+
+                  &:hover {
+                    background-color: $colorChiGong;
+                  }
+                }
+              }
             }
           }
         }
@@ -89,19 +121,20 @@
               );
             }
 
+            &:before {
+              flex-basis: 25%;
+              padding-left: $defaultSpacing;
+              margin-right: getSpacing(2);
+              font-weight: bold;
+            }
+
+
             &:first-child {
               background: $colorBGNav;
 
               &:before {
                 flex-basis: 100%;
               }
-            }
-
-            &:before {
-              flex-basis: 25%;
-              padding-left: $defaultSpacing;
-              margin-right: getSpacing(2);
-              font-weight: bold;
             }
 
             @include mobile-table-header-config;

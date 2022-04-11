@@ -95,7 +95,15 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var renderGrid = function () {// TODO: implement code to Render grid
+/* harmony import */ var _utilities_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utilities/_client */ "./src/scripts/utilities/_client.ts");
+/* eslint-disable import/extensions */
+
+/* eslint-disable import/no-unresolved */
+
+
+var renderGrid = function () {
+  var client = new _utilities_client__WEBPACK_IMPORTED_MODULE_0__["default"]();
+  client.getAllItem();
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (renderGrid);
@@ -113,39 +121,12 @@ var renderGrid = function () {// TODO: implement code to Render grid
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utilities_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utilities/_helper */ "./src/scripts/utilities/_helper.ts");
 /* harmony import */ var _components_grid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/_grid */ "./src/scripts/components/_grid.ts");
-/* harmony import */ var _utilities_folder_model__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utilities/_folder.model */ "./src/scripts/utilities/_folder.model.ts");
-/* harmony import */ var _utilities_file_model__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utilities/_file.model */ "./src/scripts/utilities/_file.model.ts");
-/* harmony import */ var _utilities_item_list__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utilities/_item.list */ "./src/scripts/utilities/_item.list.ts");
-/* eslint-disable no-console */
-
-/* eslint-disable no-undef */
-
 /* eslint-disable import/extensions */
 
 /* eslint-disable import/no-unresolved */
 
 
-
-
-
 Object(_utilities_helper__WEBPACK_IMPORTED_MODULE_0__["default"])(function () {
-  var initialItemList = function (list) {
-    var item1 = new _utilities_folder_model__WEBPACK_IMPORTED_MODULE_2__["default"](1, 'CAS', 'April 08', 'Minh Thuan', 'April 30', 'Megan Bowen');
-    var item2 = new _utilities_file_model__WEBPACK_IMPORTED_MODULE_3__["default"](2, 'CoasterAndBargeLoading.xlsx', 'April 08', 'Minh Thuan', 'A few seconds ago', 'Administrator', 'xlsx');
-    var item3 = new _utilities_file_model__WEBPACK_IMPORTED_MODULE_3__["default"](3, 'RevenueByServices.xlsx', 'April 08', 'Minh Thuan', 'A few seconds ago', 'Administrator', 'xlsx');
-    var item4 = new _utilities_file_model__WEBPACK_IMPORTED_MODULE_3__["default"](4, 'RevenueByServices2016.xlsx', 'April 08', 'Minh Thuan', 'A few seconds ago', 'Administrator', 'xlsx');
-    var item5 = new _utilities_file_model__WEBPACK_IMPORTED_MODULE_3__["default"](5, 'RevenueByServices2017.xlsx', 'April 08', 'Minh Thuan', 'A few seconds ago', 'Administrator', 'xlsx');
-    list.addItem(item1);
-    list.addItem(item2);
-    list.addItem(item3);
-    list.addItem(item4);
-    list.addItem(item5);
-  };
-
-  var baseItemList = new _utilities_item_list__WEBPACK_IMPORTED_MODULE_4__["default"]();
-  initialItemList(baseItemList);
-  sessionStorage.setItem('ItemList', JSON.stringify(baseItemList.itemList));
-  console.log(JSON.parse(sessionStorage.getItem('ItemList')));
   Object(_components_grid__WEBPACK_IMPORTED_MODULE_1__["default"])();
 });
 
@@ -176,6 +157,77 @@ function () {
 }();
 
 /* harmony default export */ __webpack_exports__["default"] = (Base);
+
+/***/ }),
+
+/***/ "./src/scripts/utilities/_client.ts":
+/*!******************************************!*\
+  !*** ./src/scripts/utilities/_client.ts ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _http_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_http.client */ "./src/scripts/utilities/_http.client.ts");
+
+
+var Client =
+/** @class */
+function () {
+  function Client() {
+    var _this = this;
+
+    this.getAllItem = function () {
+      _this.httpClient.getAllItem().then(function (data) {
+        _this.renderItemList(data);
+      }).catch(function (error) {
+        alert(error);
+      });
+    };
+
+    this.renderItemList = function (itemList) {
+      // const html = items.map ((item) => `html`).join('');
+      var html = '';
+      itemList.forEach(function (item) {
+        var iconClass = item.hasOwnProperty('extension') ? 'fa-file-excel' : 'fa-folder-open';
+        var recentHint = item.modifiedAt === 'A few seconds ago' ? '<i class="fab fa-yelp"></i>' : '';
+        html += "<tr>\n                <td><i class=\"fas " + iconClass + "\"></i></td>\n                <td>" + recentHint + item.name + "</td>\n                <td>" + item.modifiedAt + "</td>\n                <td>" + item.modifiedBy + "</td>\n                <td>\n                  <button class=\"btn btn-edit\">Edit</button>\n                  <button class=\"btn btn-delete\">Delete</button>\n                </td>\n                <td></td>\n              </tr>";
+      });
+      document.querySelector('#item-list').innerHTML = html;
+      var deleteBtns = document.querySelectorAll('.btn-delete');
+      var editBtns = document.querySelectorAll('.btn-edit');
+
+      var _loop_1 = function (i) {
+        deleteBtns[i].addEventListener('click', function () {
+          if (confirm('Are you sure to delete this item?')) {
+            _this.httpClient.removeItem(itemList[i].id).then(function (message) {
+              alert(message);
+            }).catch(function (error) {
+              alert(error);
+            });
+
+            _this.getAllItem();
+          }
+        });
+        editBtns[i].addEventListener('click', function () {
+          console.log('Edit');
+        });
+      };
+
+      for (var i = 0; i < deleteBtns.length; i++) {
+        _loop_1(i);
+      }
+    };
+
+    this.httpClient = new _http_client__WEBPACK_IMPORTED_MODULE_0__["default"]();
+    this.httpClient.initialItemList();
+  }
+
+  return Client;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (Client);
 
 /***/ }),
 
@@ -217,22 +269,22 @@ var __extends = undefined && undefined.__extends || function () {
 
 
 
-var File =
+var CFile =
 /** @class */
 function (_super) {
-  __extends(File, _super);
+  __extends(CFile, _super);
 
-  function File(id, name, createAt, createdBy, modifiedAt, modifiedBy, extension) {
+  function CFile(id, name, createAt, createdBy, modifiedAt, modifiedBy, extension) {
     var _this = _super.call(this, id, name, createAt, createdBy, modifiedAt, modifiedBy) || this;
 
     _this.extension = extension;
     return _this;
   }
 
-  return File;
+  return CFile;
 }(_base_model__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (File);
+/* harmony default export */ __webpack_exports__["default"] = (CFile);
 
 /***/ }),
 
@@ -318,65 +370,124 @@ var ready = function (fn) {
 
 /***/ }),
 
-/***/ "./src/scripts/utilities/_item.list.ts":
-/*!*********************************************!*\
-  !*** ./src/scripts/utilities/_item.list.ts ***!
-  \*********************************************/
+/***/ "./src/scripts/utilities/_http.client.ts":
+/*!***********************************************!*\
+  !*** ./src/scripts/utilities/_http.client.ts ***!
+  \***********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var ItemList =
+/* harmony import */ var _file_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_file.model */ "./src/scripts/utilities/_file.model.ts");
+/* harmony import */ var _folder_model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_folder.model */ "./src/scripts/utilities/_folder.model.ts");
+/* eslint-disable prefer-promise-reject-errors */
+
+/* eslint-disable no-undef */
+
+/* eslint-disable import/no-unresolved */
+
+
+
+var HttpClient =
 /** @class */
 function () {
-  function ItemList() {
-    var _this = this;
-
-    this.addItem = function (item) {
-      _this.itemList.push(item);
-    };
-
-    this.removeItem = function (id) {
-      for (var i = 0; i < _this.itemList.length; ++i) {
-        if (_this.itemList[i].id === id) {
-          _this.itemList.splice(i, 1);
-        }
-      }
-    };
-
-    this.updateItem = function (upItem) {
-      _this.itemList.forEach(function (item) {
-        if (item.id === upItem.id) {
-          item.name = upItem.name;
-          item.createdAt = upItem.createdAt;
-          item.createdBy = upItem.createdBy;
-          item.modifiedAt = upItem.modifiedAt;
-          item.modifiedBy = upItem.modifiedBy;
-        }
+  function HttpClient() {
+    this.getAllItem = function () {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          var result = JSON.parse(sessionStorage.getItem('data'));
+          if (result) resolve(Array.from(result));else reject('No Data');
+        }, 1000);
       });
     };
 
-    this.itemList = [];
+    this.getItemById = function (id) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          var result = JSON.parse(sessionStorage.getItem('data'));
+          var foundItem = result.find(function (item) {
+            return item.id === id;
+          });
+          if (foundItem) resolve(foundItem);else reject('Not Found');
+        }, 1000);
+      });
+    };
+
+    this.addItem = function (addItem) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          var result = JSON.parse(sessionStorage.getItem('data'));
+          if (result.find(function (item) {
+            return item.name === addItem.name;
+          })) reject('Item Already Exists!');else {
+            result.push(addItem);
+            sessionStorage.setItem('data', JSON.stringify(result));
+            resolve('Successfully Added!');
+          }
+        }, 1000);
+      });
+    };
+
+    this.updateItem = function (upItem) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          var _a;
+
+          var result = JSON.parse(sessionStorage.getItem('data'));
+          var foundItem = result.find(function (item) {
+            return item.id === upItem.id;
+          });
+
+          if (foundItem) {
+            var index = result.indexOf(foundItem);
+            _a = [upItem.name, upItem.createdAt, upItem.createdBy, upItem.modifiedAt, upItem.modifiedBy], result[index].name = _a[0], result[index].createdAt = _a[1], result[index].createdBy = _a[2], result[index].modifiedAt = _a[3], result[index].modifiedBy = _a[4];
+            sessionStorage.setItem('data', JSON.stringify(result));
+            resolve('Successfully Updated!');
+          } else reject('Item Not Found!');
+        }, 1000);
+      });
+    };
+
+    this.removeItem = function (id) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          var result = JSON.parse(sessionStorage.getItem('data'));
+          var foundItem = result.find(function (item) {
+            return item.id === id;
+          });
+
+          if (foundItem) {
+            result.splice(result.indexOf(foundItem), 1);
+            sessionStorage.setItem('data', JSON.stringify(result));
+            resolve('Successfully Deleted!');
+          } else reject('Item Not Found!');
+        }, 1000);
+      });
+    };
+
+    this.initialItemList = function () {
+      var data = [];
+      var item1 = new _folder_model__WEBPACK_IMPORTED_MODULE_1__["default"](1, 'CAS', 'April 08', 'Minh Thuan', 'April 30', 'Megan Bowen');
+      var item2 = new _file_model__WEBPACK_IMPORTED_MODULE_0__["default"](2, 'CoasterAndBargeLoading.xlsx', 'April 08', 'Minh Thuan', 'A few seconds ago', 'Administrator', 'xlsx');
+      var item3 = new _file_model__WEBPACK_IMPORTED_MODULE_0__["default"](3, 'RevenueByServices.xlsx', 'April 08', 'Minh Thuan', 'A few seconds ago', 'Administrator', 'xlsx');
+      var item4 = new _file_model__WEBPACK_IMPORTED_MODULE_0__["default"](4, 'RevenueByServices2016.xlsx', 'April 08', 'Minh Thuan', 'A few seconds ago', 'Administrator', 'xlsx');
+      var item5 = new _file_model__WEBPACK_IMPORTED_MODULE_0__["default"](5, 'RevenueByServices2017.xlsx', 'April 08', 'Minh Thuan', 'A few seconds ago', 'Administrator', 'xlsx');
+      data.push(item1);
+      data.push(item2);
+      data.push(item3);
+      data.push(item4);
+      data.push(item5);
+      sessionStorage.setItem('data', JSON.stringify(data));
+    };
+
+    this.initialItemList();
   }
 
-  ItemList.prototype.getAllItem = function () {
-    return this.itemList;
-  };
-
-  ItemList.prototype.getItemById = function (id) {
-    this.itemList.forEach(function (item) {
-      if (item.id === id) {
-        return item;
-      }
-    });
-    return null;
-  };
-
-  return ItemList;
+  return HttpClient;
 }();
 
-/* harmony default export */ __webpack_exports__["default"] = (ItemList);
+/* harmony default export */ __webpack_exports__["default"] = (HttpClient);
 
 /***/ }),
 

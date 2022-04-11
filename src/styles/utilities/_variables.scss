@@ -1,5 +1,6 @@
 //Color Palettes
-$colorBlack: black;
+$colorWhiteSmoke: #ecf0f1;
+$colorBlack: #1e272e;
 $colorLightGrey: #bdc3c7;
 $colorDarkYellow: #fbc531;
 $colorGreen: #27ae60;
@@ -10,6 +11,11 @@ $colorDarkGrey: #2c3e50;
 $colorGrey: #7f8c8d;
 $colorPinkGlamour: #ff7675;
 $colorDarkBlueGrey: #34495e;
+$colorFadedPoster: #81ecec;
+$colorRobinEggBlue: #00cec9;
+$colorChiGong: #d63031;
+$colorMintLeaf: #00b894;
+$colorOrangeVille: #e17055;
 
 //Color Template
 $colorBGPrimary: $colorWhiteGrey;
@@ -19,8 +25,12 @@ $colorTextSecondary: $colorDarkGrey;
 
 //Dimension
 $defaultWidthBorder: 1px;
+$defaultBorderRadius: 0.5rem;
 $heightNav: 5rem;
 $heightNavIcon: 3rem;
+$heightActionBtn: 3rem;
+$heightModalInput: 2.5rem;
+$widthActionBtn: 5rem;
 $widthNavIcon: 5rem;
 
 //Spacing

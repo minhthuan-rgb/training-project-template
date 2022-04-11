@@ -8,7 +8,6 @@
   &-list {
     @include flex-config;
     padding: 0 $defaultSpacing;
-    overflow: hidden;
     transition: all 0.1s;
 
     &-item {
@@ -42,6 +41,35 @@
           color: $colorTextNavHover;
         }
       }
+
+      &.dropdown {
+        position: relative;
+
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          top: $heightNav;
+          background: $colorBGNav;
+          min-width: 100%;
+          box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+          z-index: 1;
+
+          a {
+            @include flex-config;
+            justify-content: flex-start;
+
+            &:hover {
+              background-color: $colorBGNavHover;
+            }
+          }
+        }
+
+        &:hover {
+          .dropdown-content {
+            display: block;
+          }
+        }
+      }
     }
   }
 }
@@ -62,7 +90,7 @@
       position: absolute;
       top: $heightNav;
       display: none;
-      border-radius: 0 0 0.5rem 0.5rem;
+      border-radius: 0 0 $defaultBorderRadius $defaultBorderRadius;
       z-index: 1;
 
       &-item {

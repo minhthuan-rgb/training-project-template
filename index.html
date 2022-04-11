@@ -37,12 +37,16 @@
         <i class="fa fa-bars"></i>
       </button>
       <ul class="nav-list">
-        <li class="nav-list-item">
-          <a href="./"
+        <li class="nav-list-item dropdown">
+          <a href="#" class="dropdown-btn"
             ><i class="fas fa-plus"></i>New<i
               class="fas fa-caret-down dp-ico"
             ></i
           ></a>
+          <div class="dropdown-content">
+            <a href="#">Folder</a>
+            <a href="#">File</a>
+          </div>
         </li>
         <li class="nav-list-item">
           <a href="./"
@@ -87,15 +91,20 @@
               <span>Modified By</span
               ><i class="fas fa-caret-down"></i>
             </th>
+            <th>Action</th>
             <th><i class="fas fa-plus"></i>Add Column</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="item-list">
           <tr>
             <td><i class="fas fa-folder-open"></i></td>
             <td>CAS</td>
             <td>April 30</td>
             <td>Megan Bowen</td>
+            <td>
+              <button class="btn btn-edit">Edit</button>
+              <button class="btn btn-delete">Delete</button>
+            </td>
             <td></td>
           </tr>
           <tr>
@@ -105,6 +114,10 @@
             </td>
             <td>A few seconds ago</td>
             <td>Administrator MOD</td>
+            <td>
+              <button class="btn btn-edit">Edit</button>
+              <button class="btn btn-delete">Delete</button>
+            </td>
             <td></td>
           </tr>
           <tr>
@@ -112,6 +125,10 @@
             <td><i class="fab fa-yelp"></i>RevenueByServices.xlsx</td>
             <td>A few seconds ago</td>
             <td>Administrator MOD</td>
+            <td>
+              <button class="btn btn-edit">Edit</button>
+              <button class="btn btn-delete">Delete</button>
+            </td>
             <td></td>
           </tr>
           <tr>
@@ -121,6 +138,10 @@
             </td>
             <td>A few seconds ago</td>
             <td>Administrator MOD</td>
+            <td>
+              <button class="btn btn-edit">Edit</button>
+              <button class="btn btn-delete">Delete</button>
+            </td>
             <td></td>
           </tr>
           <tr>
@@ -130,11 +151,96 @@
             </td>
             <td>A few seconds ago</td>
             <td>Administrator MOD</td>
+            <td>
+              <button class="btn btn-edit">Edit</button>
+              <button class="btn btn-delete">Delete</button>
+            </td>
             <td></td>
           </tr>
         </tbody>
       </table>
     </section>
+    <div id="formModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-content-header">
+          <h2>Add An Item / Update Item</h2>
+          <button class="btn-close" type="button" aria-label="Close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-content-body form">
+          <div class="form-group">
+            <label for="itemId">ID</label>
+            <input
+              class="form-control"
+              id="itemId"
+              type="number"
+              name="ID"
+              disabled
+            />
+          </div>
+          <div class="form-group">
+            <label for="modifiedAt">Modified At</label>
+            <input
+              class="form-control"
+              id="modifiedAt"
+              type="datetime-local"
+              name="ModifiedAt"
+              disabled
+            />
+          </div>
+          <div class="form-group">
+            <label for="modifiedBy">Modified By</label>
+            <input
+              class="form-control"
+              id="modifiedBy"
+              type="text"
+              name="ModifiedBy"
+            />
+          </div>
+          <div class="form-group">
+            <label for="createAt">Create At</label>
+            <input
+              class="form-control"
+              id="createAt"
+              type="datetime-local"
+              name="CreateAt"
+              disabled
+            />
+          </div>
+          <div class="form-group">
+            <label class="" for="createBy">Create By</label>
+            <input
+              class="form-control"
+              id="createBy"
+              type="text"
+              name="CreateBy"
+            />
+          </div>
+          <div class="form-group">
+            <label for="subFolders">Sub Folders</label>
+            <input
+              class="form-control"
+              id="subFolders"
+              type="text"
+              name="SubFolders"
+            />
+          </div>
+          <div class="form-group">
+            <label for="extension">Extension</label>
+            <input
+              class="form-control"
+              id="extension"
+              type="text"
+              name="SubFolders"
+            />
+          </div>
+        </div>
+        <div class="modal-content-footer">
+          <button type="button">Close</button>
+          <button type="button">Save</button>
+          <button type="button">Add</button>
+        </div>
+      </div>
+    </div>
     <script src="./dist/js/home-page.js"></script>
   </body>
 </html>

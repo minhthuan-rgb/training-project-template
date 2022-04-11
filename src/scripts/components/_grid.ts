@@ -1,5 +1,11 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+import Client from '../utilities/_client';
+
 const renderGrid = () => {
-  // TODO: implement code to Render grid
+  const client = new Client();
+
+  client.getAllItem();
 };
 
 export default renderGrid;

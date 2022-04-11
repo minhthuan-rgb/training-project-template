@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import Base from './_base.model';
 
-export default class File extends Base {
+export default class CFile extends Base {
   extension: string;
 
   constructor(

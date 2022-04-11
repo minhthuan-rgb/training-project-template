@@ -5,3 +5,7 @@
 @function getSpacing($ratio) {
   @return $defaultSpacing * $ratio;
 }
+
+@function getBorderRadius($ratio) {
+  @return $defaultBorderRadius*$ratio;
+}
