@@ -28,6 +28,18 @@ button {
   font-family: "Roboto", sans-serif;
 }
 
+.btn {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  width: 5rem;
+  height: 3rem;
+  font-size: 1.3rem;
+  border: 1px solid transparent;
+}
+.btn:not(:last-child) {
+  margin-right: 0.5rem;
+}
+
 .nav {
   width: 100%;
   background: #dcdde1;
@@ -174,14 +186,6 @@ button {
   font-size: 0.85rem;
   vertical-align: text-top;
 }
-.doc-table tbody tr td:nth-last-child(2) .btn {
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  width: 5rem;
-  height: 3rem;
-  font-size: 1.3rem;
-  border: 1px solid transparent;
-}
 .doc-table tbody tr td:nth-last-child(2) .btn.btn-edit {
   margin-right: 0.5rem;
   background: #81ecec;
@@ -303,8 +307,13 @@ button {
 }
 
 .modal {
-  width: 70%;
-  margin: 0 auto;
+  display: none;
+  position: fixed;
+  z-index: 1;
+  overflow: auto;
+  width: 60%;
+  left: 15%;
+  top: 10rem;
   background: #dcdde1;
   padding: 3.5rem;
   font-size: 1.6rem;
@@ -326,14 +335,20 @@ button {
   background: transparent;
   border: none;
 }
+.modal-content-header .btn-close:hover, .modal-content-header .btn-close:focus {
+  color: #1e272e;
+}
 .modal-content-header h2 {
   flex-basis: 100%;
   text-align: center;
   font-weight: bold;
 }
+.modal-content-body {
+  margin-bottom: 2rem;
+}
 .modal-content-body .form-group {
   height: 2.5rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -361,6 +376,34 @@ button {
 }
 .modal-content-body .form-group .form-control:disabled {
   background: #ecf0f1;
+}
+.modal-content-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  justify-content: flex-end;
+}
+.modal-content-footer .btn.btn-close {
+  background: #ff7675;
+  border: #e17055;
+}
+.modal-content-footer .btn.btn-close:hover {
+  background: #d63031;
+}
+.modal-content-footer .btn#btnConfirm {
+  background: #81ecec;
+  border-color: #00cec9;
+}
+.modal-content-footer .btn#btnConfirm:hover {
+  background: #00b894;
+}
+.modal-content-footer .btn#btn-add {
+  background: #55efc4;
+  border: #00b894;
+}
+.modal-content-footer .btn#btn-add:hover {
+  background: #22a6b3;
 }
 
 @media only screen and (max-width: 767.98px) {

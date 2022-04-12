@@ -1,3 +1,5 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-param-reassign */
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable no-undef */
 /* eslint-disable import/no-unresolved */
@@ -9,7 +11,7 @@ export default class HttpClient {
     this.initialItemList();
   }
 
-  getAllItem = () => {
+  getAllItems = () => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         const result = JSON.parse(sessionStorage.getItem('data'));
@@ -27,8 +29,24 @@ export default class HttpClient {
         );
         const foundItem = result.find(item => item.id === id);
         if (foundItem) resolve(foundItem);
-        else reject('Not Found');
+        else reject('Item Not Found');
       }, 1000);
+    });
+  };
+
+  getFolderItems = (id: number) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const result: Array<Folder | CFile> = JSON.parse(
+          sessionStorage.getItem('data'),
+        );
+        const folderItems = result.filter(
+          item => !item.hasOwnProperty('extension') && item.id !== id,
+        );
+
+        if (folderItems) resolve(Array.from(folderItems));
+        else reject('No Folder Items Found');
+      }, 0);
     });
   };
 
@@ -41,6 +59,7 @@ export default class HttpClient {
         if (result.find(item => item.name === addItem.name))
           reject('Item Already Exists!');
         else {
+          addItem.id = result.length + 1;
           result.push(addItem);
           sessionStorage.setItem('data', JSON.stringify(result));
           resolve('Successfully Added!');

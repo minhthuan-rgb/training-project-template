@@ -44,8 +44,8 @@
             ></i
           ></a>
           <div class="dropdown-content">
-            <a href="#">Folder</a>
-            <a href="#">File</a>
+            <a href="#" id="newFolder">Folder</a>
+            <a href="#" id="newFile">File</a>
           </div>
         </li>
         <li class="nav-list-item">
@@ -95,7 +95,7 @@
             <th><i class="fas fa-plus"></i>Add Column</th>
           </tr>
         </thead>
-        <tbody id="item-list">
+        <tbody id="itemList">
           <tr>
             <td><i class="fas fa-folder-open"></i></td>
             <td>CAS</td>
@@ -163,10 +163,10 @@
     <div id="formModal" class="modal">
       <div class="modal-content">
         <div class="modal-content-header">
-          <h2>Add An Item / Update Item</h2>
+          <h2 id="modalHeader">Add An Item/ Update An Item</h2>
           <button class="btn-close" type="button" aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
-        <div class="modal-content-body form">
+        <div class="modal-content-body" id="modalForm">
           <div class="form-group">
             <label for="itemId">ID</label>
             <input
@@ -178,11 +178,20 @@
             />
           </div>
           <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              class="form-control"
+              id="name"
+              type="text"
+              name="name"
+            />
+          </div>
+          <div class="form-group">
             <label for="modifiedAt">Modified At</label>
             <input
               class="form-control"
               id="modifiedAt"
-              type="datetime-local"
+              type="text"
               name="ModifiedAt"
               disabled
             />
@@ -197,17 +206,17 @@
             />
           </div>
           <div class="form-group">
-            <label for="createAt">Create At</label>
+            <label for="createdAt">Created At</label>
             <input
               class="form-control"
               id="createAt"
-              type="datetime-local"
+              type="text"
               name="CreateAt"
               disabled
             />
           </div>
           <div class="form-group">
-            <label class="" for="createBy">Create By</label>
+            <label class="" for="createdBy">Created By</label>
             <input
               class="form-control"
               id="createBy"
@@ -230,14 +239,13 @@
               class="form-control"
               id="extension"
               type="text"
-              name="SubFolders"
+              name="Extension"
             />
           </div>
         </div>
-        <div class="modal-content-footer">
-          <button type="button">Close</button>
-          <button type="button">Save</button>
-          <button type="button">Add</button>
+        <div class="modal-content-footer" id="modalFooter">
+          <button type="button" class="btn btn-close">Close</button>
+          <button type="button" class="btn" id="btnConfirm">Add/ Save</button>
         </div>
       </div>
     </div>

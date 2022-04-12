@@ -52,8 +52,13 @@
 }
 
 .modal {
-  width: 70%;
-  margin: 0 auto;
+  display: none;
+  position: fixed;
+  z-index: 1;
+  overflow: auto;
+  width: 60%;
+  left: 15%;
+  top: $spacingTopModal;
   background: $colorBGNav;
   padding: getSpacing(3.5);
   font-size: $fontSizeTextDesktop;
@@ -71,6 +76,10 @@
       .btn-close {
         background: transparent;
         border: none;
+
+        &:hover, &:focus {
+          color: $colorBlack;
+        }
       }
 
       h2 {
@@ -81,9 +90,10 @@
     }
 
     &-body {
+      margin-bottom: getSpacing(2);
       .form-group{
         height: $heightModalInput;
-        margin-bottom: getSpacing(0.75);
+        margin-bottom: $defaultSpacing;
         @include flex-config;
         justify-content: flex-start;
 
@@ -106,6 +116,40 @@
 
           &:disabled {
             background: $colorWhiteSmoke;
+          }
+        }
+      }
+    }
+
+    &-footer {
+      @include flex-config;
+      justify-content: flex-end;
+
+      .btn {
+        &.btn-close {
+          background: $colorPinkGlamour;
+          border: $colorOrangeVille;
+
+          &:hover {
+            background: $colorChiGong;
+          }
+        }
+
+        &#btnConfirm {
+          background: $colorFadedPoster;
+          border-color: $colorRobinEggBlue;
+
+          &:hover {
+            background: $colorMintLeaf;
+          }
+        }
+
+        &#btn-add {
+          background: $colorGreenishBlue;
+          border: $colorMintLeaf;
+
+          &:hover {
+            background: $colorGreenLandGreen;
           }
         }
       }

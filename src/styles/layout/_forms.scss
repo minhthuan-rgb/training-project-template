@@ -48,13 +48,6 @@
 
             &:nth-last-child(2) {
               .btn {
-                padding: getSpacing(0.25) getSpacing(0.5);
-                border-radius: getBorderRadius(0.5);
-                width: $widthActionBtn;
-                height: $heightActionBtn;
-                font-size: $fontSizeTextMobile;
-                @include draw-border($defaultWidthBorder, transparent, full);
-                
                 &.btn-edit {
                   margin-right:getSpacing(0.5);
                   background: $colorFadedPoster;
