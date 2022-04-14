@@ -57,6 +57,7 @@
   z-index: 1;
   overflow: auto;
   width: 60%;
+  height: fit-content;
   left: 15%;
   top: $spacingTopModal;
   background: $colorBGNav;
@@ -97,7 +98,17 @@
         @include flex-config;
         justify-content: flex-start;
 
-        label {
+        &:last-child {
+          .form-control {
+            @include flex-config;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            border: none;
+            height: fit-content;
+          }
+        }
+
+        label, p {
           flex-basis: 30%;
           max-width: 30%;
           height: 100%;

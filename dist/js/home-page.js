@@ -112,17 +112,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var renderGrid = function () {
-  var client = new _utilities_client__WEBPACK_IMPORTED_MODULE_0__["default"]();
-  client.getAllItem();
   var modal = document.querySelector('#formModal');
   var closeBtns = document.querySelectorAll('.modal .btn-close');
+  var newFolder = document.querySelector('#newFolder');
+  var newFile = document.querySelector('#newFile');
+  var client = new _utilities_client__WEBPACK_IMPORTED_MODULE_0__["default"]();
+  client.getAllItem();
   closeBtns.forEach(function (btn) {
     btn.onclick = function () {
       modal.style.display = 'none';
     };
   });
-  var newFolder = document.querySelector('#newFolder');
-  var newFile = document.querySelector('#newFile');
 
   newFolder.onclick = function () {
     client.openModal(false, true, null);
@@ -199,6 +199,146 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _file_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_file.model */ "./src/scripts/utilities/_file.model.ts");
 /* harmony import */ var _folder_model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_folder.model */ "./src/scripts/utilities/_folder.model.ts");
 /* harmony import */ var _http_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./_http.client */ "./src/scripts/utilities/_http.client.ts");
+var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+var __generator = undefined && undefined.__generator || function (thisArg, body) {
+  var _ = {
+    label: 0,
+    sent: function () {
+      if (t[0] & 1) throw t[1];
+      return t[1];
+    },
+    trys: [],
+    ops: []
+  },
+      f,
+      y,
+      t,
+      g;
+  return g = {
+    next: verb(0),
+    "throw": verb(1),
+    "return": verb(2)
+  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+    return this;
+  }), g;
+
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+
+    while (_) try {
+      if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+      if (y = 0, t) op = [op[0] & 2, t.value];
+
+      switch (op[0]) {
+        case 0:
+        case 1:
+          t = op;
+          break;
+
+        case 4:
+          _.label++;
+          return {
+            value: op[1],
+            done: false
+          };
+
+        case 5:
+          _.label++;
+          y = op[1];
+          op = [0];
+          continue;
+
+        case 7:
+          op = _.ops.pop();
+
+          _.trys.pop();
+
+          continue;
+
+        default:
+          if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+            _ = 0;
+            continue;
+          }
+
+          if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+            _.label = op[1];
+            break;
+          }
+
+          if (op[0] === 6 && _.label < t[1]) {
+            _.label = t[1];
+            t = op;
+            break;
+          }
+
+          if (t && _.label < t[2]) {
+            _.label = t[2];
+
+            _.ops.push(op);
+
+            break;
+          }
+
+          if (t[2]) _.ops.pop();
+
+          _.trys.pop();
+
+          continue;
+      }
+
+      op = body.call(thisArg, _);
+    } catch (e) {
+      op = [6, e];
+      y = 0;
+    } finally {
+      f = t = 0;
+    }
+
+    if (op[0] & 5) throw op[1];
+    return {
+      value: op[0] ? op[1] : void 0,
+      done: true
+    };
+  }
+};
 /* eslint-disable no-shadow */
 
 /* eslint-disable no-constant-condition */
@@ -224,6 +364,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var Client =
 /** @class */
 function () {
@@ -236,6 +378,8 @@ function () {
     this.getAllItem = function () {
       _this.httpClient.getAllItems().then(function (data) {
         _this.renderItemList(data);
+
+        _this.itemList = data;
       }).catch(function (error) {
         alert(error);
       });
@@ -267,22 +411,165 @@ function () {
       }
     };
 
+    this.openModal = function (isFile, isNew, item) {
+      var htmlBodyLastChild = '';
+
+      if (!isFile) {
+        _this.item = new _folder_model__WEBPACK_IMPORTED_MODULE_1__["default"](0, '', '', '', '', '', []);
+        _this.isFile = false;
+
+        if (isNew) {
+          _this.isEdit = false;
+          _this.item.id = 0;
+          _this.item.name = 'Test Folder';
+          _this.item.createdAt = 'A few seconds ago';
+          _this.item.createdBy = 'Minh Thuan';
+          _this.item.modifiedAt = 'A few seconds ago';
+          _this.item.modifiedBy = 'Minh Thuan';
+          _this.item.subFolders = [];
+        } else {
+          _this.isEdit = true;
+          _this.item = item;
+        }
+
+        htmlBodyLastChild = "<div class=\"form-group\">\n                            <p>Sub Folders</p>\n                            <div class=\"form-control\">";
+        _this.folderList = _this.itemList.filter(function (item) {
+          return !item.hasOwnProperty('extension') && item.id !== _this.item.id;
+        });
+        _this.folderList = _this.folderList.filter(function (folder) {
+          return !folder.subFolders.find(function (subFolder) {
+            return subFolder.id === _this.item.id;
+          });
+        });
+        console.log(_this.folderList);
+
+        if (_this.folderList.length > 0) {
+          _this.folderList.forEach(function (item) {
+            htmlBodyLastChild += "<label>\n                                  <input name=\"subFolder\" type=\"checkbox\" class=\"input-checkbox\" value=\"" + item.id + "\" " + (_this.item.subFolders.find(function (folder) {
+              return folder.id === item.id;
+            }) ? 'checked' : '') + ">" + item.name + "\n                                </label>";
+          });
+        } else {
+          htmlBodyLastChild += "<p>None</>";
+        }
+
+        htmlBodyLastChild += "</div>\n                          </div>";
+      } else {
+        _this.isFile = true;
+        _this.item = new _file_model__WEBPACK_IMPORTED_MODULE_0__["default"](0, '', '', '', '', '', '');
+
+        if (isNew) {
+          _this.isEdit = false;
+          _this.item.id = 0;
+          _this.item.name = 'TestFile.xlsx';
+          _this.item.createdAt = 'A few seconds ago';
+          _this.item.createdBy = 'Minh Thuan';
+          _this.item.modifiedAt = 'A few seconds ago';
+          _this.item.modifiedBy = 'Minh Thuan';
+          _this.item.extension = _this.getExtension(_this.item.name);
+        } else {
+          _this.isEdit = true;
+          _this.item = item;
+        }
+
+        htmlBodyLastChild = "<div class=\"form-group\">\n                            <label for=\"extension\">Extension</label>\n                            <input\n                              class=\"form-control\"\n                              id=\"extension\"\n                              type=\"text\"\n                              name=\"Extension\"\n                              value=\"" + _this.item.extension + "\"\n                            />\n                          </div>";
+      }
+
+      _this.renderModal(htmlBodyLastChild); // Show Modal
+
+
+      document.querySelector('#formModal').setAttribute('style', 'display: block;');
+    };
+
+    this.renderModal = function (htmlBodyLastChild) {
+      // Header config
+      var headerText = (_this.isEdit ? 'Update' : 'Add New') + " " + (_this.isFile ? 'File' : 'Folder') + " " + (_this.isEdit ? _this.item.id : '');
+      document.querySelector('#modalHeader').textContent = headerText; // Body config
+
+      var htmlBody = "<div class=\"form-group\">\n                      <label for=\"itemId\">ID</label>\n                      <input\n                        class=\"form-control\"\n                        id=\"itemId\"\n                        type=\"number\"\n                        name=\"ID\"\n                        disabled\n                        value=\"" + _this.item.id + "\"\n                      />\n                    </div>\n                    <div class=\"form-group\">\n                      <label for=\"name\">Name</label>\n                      <input\n                        class=\"form-control\"\n                        id=\"name\"\n                        type=\"text\"\n                        name=\"Name\"\n                        value=\"" + _this.item.name + "\"\n                      />\n                    </div>\n                    <div class=\"form-group\">\n                    <label for=\"modifiedAt\">Modified At</label>\n                    <input\n                      class=\"form-control\"\n                      id=\"modifiedAt\"\n                      type=\"text\"\n                      name=\"ModifiedAt\"\n                      disabled\n                      value=\"" + _this.item.modifiedAt + "\"\n                    />\n                  </div>\n                  <div class=\"form-group\">\n                    <label for=\"modifiedBy\">Modified By</label>\n                    <input\n                      class=\"form-control\"\n                      id=\"modifiedBy\"\n                      type=\"text\"\n                      name=\"ModifiedBy\"\n                      value=\"" + _this.item.modifiedBy + "\"\n                    />\n                  </div>\n                  <div class=\"form-group\">\n                    <label for=\"createdAt\">Created At</label>\n                    <input\n                      class=\"form-control\"\n                      id=\"createdAt\"\n                      type=\"text\"\n                      name=\"CreateAt\"\n                      disabled\n                      value=\"" + _this.item.createdAt + "\"\n                    />\n                  </div>\n                  <div class=\"form-group\">\n                    <label class=\"\" for=\"createdBy\">Created By</label>\n                    <input\n                      class=\"form-control\"\n                      id=\"createdBy\"\n                      type=\"text\"\n                      name=\"CreateBy\"\n                      value=\"" + _this.item.createdBy + "\"\n                    />\n                  </div>";
+      htmlBody += htmlBodyLastChild;
+      document.querySelector('#modalForm').innerHTML = htmlBody;
+      if (!_this.isEdit) document.querySelector('#modalForm .form-group:first-child').setAttribute('style', 'display: none;'); // Footer config
+
+      var btnConfirm = document.querySelector('#modalFooter #btnConfirm');
+      btnConfirm.textContent = _this.isEdit ? 'Save' : 'Add';
+
+      btnConfirm.onclick = function () {
+        btnConfirm.setAttribute('style', 'cursor: not-allowed;');
+
+        _this.confirmModal();
+      };
+    };
+
+    this.confirmModal = function () {
+      var itemId = document.querySelector('#itemId');
+      var name = document.querySelector('#name');
+      var createdAt = document.querySelector('#createdAt');
+      var createdBy = document.querySelector('#createdBy');
+      var modifiedAt = document.querySelector('#modifiedAt');
+      var modifiedBy = document.querySelector('#modifiedBy');
+      _this.item.id = +itemId.value;
+      _this.item.name = name.value;
+      _this.item.createdAt = createdAt.value;
+      _this.item.createdBy = createdBy.value;
+      _this.item.modifiedAt = modifiedAt.value;
+      _this.item.modifiedBy = modifiedBy.value;
+
+      if (_this.isFile) {
+        var extension = document.querySelector('#extension');
+        extension.value = _this.getExtension(_this.item.name);
+        _this.item.extension = extension.value;
+      } else {
+        var subFolders = document.getElementsByName('subFolder');
+        subFolders.forEach(function (subFolder) {
+          var temp = subFolder;
+          var subFolders = [];
+
+          if (temp.checked === true) {
+            subFolders.push(_this.folderList.find(function (folder) {
+              return folder.id === +temp.value;
+            }));
+          }
+
+          _this.item.subFolders = subFolders;
+        });
+      }
+
+      if (_this.isEdit) _this.updateItem();else _this.addItem();
+    };
+
+    this.hideModal = function () {
+      _this.getAllItem();
+
+      document.querySelector('#formModal').setAttribute('style', 'display: none;');
+
+      _this.reloadModalBtn();
+    };
+
+    this.reloadModalBtn = function () {
+      document.querySelector('#modalFooter #btnConfirm').setAttribute('style', 'cursor: pointer;');
+    };
+
     this.addItem = function () {
       _this.httpClient.addItem(_this.item).then(function (message) {
-        _this.reloadModal();
+        _this.hideModal();
 
         alert(message);
       }).catch(function (error) {
+        _this.reloadModalBtn();
+
         alert(error);
       });
     };
 
     this.updateItem = function () {
       _this.httpClient.updateItem(_this.item).then(function (message) {
-        _this.reloadModal();
+        _this.hideModal();
 
         alert(message);
       }).catch(function (error) {
+        _this.reloadModalBtn();
+
         alert(error);
       });
     };
@@ -297,104 +584,52 @@ function () {
 
         _this.getAllItem();
       }
-    };
+    }; // function to test async/ await
 
-    this.reloadModal = function () {
-      _this.getAllItem();
 
-      document.querySelector('#formModal').setAttribute('style', 'display: none;');
-      document.querySelector('#modalFooter #btnConfirm').setAttribute('style', 'cursor: pointer;');
+    this.getFolderItems = function () {
+      return __awaiter(_this, void 0, void 0, function () {
+        var _a, ex_1;
+
+        return __generator(this, function (_b) {
+          switch (_b.label) {
+            case 0:
+              _b.trys.push([0, 2,, 3]);
+
+              _a = this;
+              return [4
+              /*yield*/
+              , this.httpClient.getFolderItems(this.item.id)];
+
+            case 1:
+              _a.folderList = _b.sent();
+              console.log(this.folderList);
+              return [3
+              /*break*/
+              , 3];
+
+            case 2:
+              ex_1 = _b.sent();
+              alert(ex_1);
+              return [3
+              /*break*/
+              , 3];
+
+            case 3:
+              return [2
+              /*return*/
+              ];
+          }
+        });
+      });
     };
 
     this.httpClient = new _http_client__WEBPACK_IMPORTED_MODULE_2__["default"]();
     this.httpClient.initialItemList();
   }
 
-  Client.prototype.openModal = function (isFile, isNew, item) {
-    var _a, _b;
-
-    var _this = this;
-
-    var htmlBodyLastChild = 'abc';
-
-    if (!isFile) {
-      this.item = new _folder_model__WEBPACK_IMPORTED_MODULE_1__["default"](0, '', '', '', '', '', []);
-      this.isFile = false;
-
-      if (isNew) {
-        this.isEdit = false;
-        _a = [0, 'Test Folder', 'A few seconds ago', 'Minh Thuan', 'A few seconds ago', 'Minh Thuan', []], this.item.id = _a[0], this.item.name = _a[1], this.item.createdAt = _a[2], this.item.createdBy = _a[3], this.item.modifiedAt = _a[4], this.item.modifiedBy = _a[5], this.item.subFolders = _a[6];
-      } else {
-        this.isEdit = true;
-        this.item = item;
-      }
-
-      this.httpClient.getFolderItems(this.item.id).then(function (data) {
-        htmlBodyLastChild = "<div class=\"form-group\">\n                                <p>Sub Folders</p>";
-        data.forEach(function (item) {
-          htmlBodyLastChild += "<label>\n                                    <input name=\"folderId\" type=\"checkbox\" class=\"input-checkbox\" value=\"" + item.id + "\">" + item.name + "\n                                  </label>";
-        });
-        htmlBodyLastChild += "</div>";
-      }).catch(function (error) {
-        console.log(error);
-        htmlBodyLastChild = "<div class=\"form-group\">\n                                <p>Sub Folders</p>\n                                <p>None</p>\n                              </div>";
-      });
-      console.log(htmlBodyLastChild);
-    } else {
-      this.isFile = true;
-      this.item = new _file_model__WEBPACK_IMPORTED_MODULE_0__["default"](0, '', '', '', '', '', '');
-
-      if (isNew) {
-        _b = [0, 'Test File', 'A few seconds ago', 'Minh Thuan', 'A few seconds ago', 'Minh Thuan', 'xlsx'], this.item.id = _b[0], this.item.name = _b[1], this.item.createdAt = _b[2], this.item.createdBy = _b[3], this.item.modifiedAt = _b[4], this.item.modifiedBy = _b[5], this.item.extension = _b[6];
-      } else {
-        this.isEdit = true;
-        this.item = item;
-      }
-
-      htmlBodyLastChild = "<div class=\"form-group\">\n                            <label for=\"extension\">Extension</label>\n                            <input\n                              class=\"form-control\"\n                              id=\"extension\"\n                              type=\"text\"\n                              name=\"Extension\"\n                              value=\"" + this.item.extension + "\"\n                            />\n                          </div>";
-    } // Header config
-
-
-    var headerText = (this.isEdit ? 'Update' : 'Add New') + " " + (this.isFile ? 'File' : 'Folder') + " " + (this.isEdit ? this.item.id : '');
-    document.querySelector('#modalHeader').textContent = headerText; // Body config
-
-    var htmlBody = "<div class=\"form-group\">\n                      <label for=\"itemId\">ID</label>\n                      <input\n                        class=\"form-control\"\n                        id=\"itemId\"\n                        type=\"number\"\n                        name=\"ID\"\n                        disabled\n                        value=\"" + this.item.id + "\"\n                      />\n                    </div>\n                    <div class=\"form-group\">\n                      <label for=\"name\">Name</label>\n                      <input\n                        class=\"form-control\"\n                        id=\"name\"\n                        type=\"text\"\n                        name=\"Name\"\n                        value=\"" + this.item.name + "\"\n                      />\n                    </div>\n                    <div class=\"form-group\">\n                    <label for=\"modifiedAt\">Modified At</label>\n                    <input\n                      class=\"form-control\"\n                      id=\"modifiedAt\"\n                      type=\"text\"\n                      name=\"ModifiedAt\"\n                      disabled\n                      value=\"" + this.item.modifiedAt + "\"\n                    />\n                  </div>\n                  <div class=\"form-group\">\n                    <label for=\"modifiedBy\">Modified By</label>\n                    <input\n                      class=\"form-control\"\n                      id=\"modifiedBy\"\n                      type=\"text\"\n                      name=\"ModifiedBy\"\n                      value=\"" + this.item.modifiedBy + "\"\n                    />\n                  </div>\n                  <div class=\"form-group\">\n                    <label for=\"createdAt\">Created At</label>\n                    <input\n                      class=\"form-control\"\n                      id=\"createdAt\"\n                      type=\"text\"\n                      name=\"CreateAt\"\n                      disabled\n                      value=\"" + this.item.createdAt + "\"\n                    />\n                  </div>\n                  <div class=\"form-group\">\n                    <label class=\"\" for=\"createdBy\">Created By</label>\n                    <input\n                      class=\"form-control\"\n                      id=\"createdBy\"\n                      type=\"text\"\n                      name=\"CreateBy\"\n                      value=\"" + this.item.createdBy + "\"\n                    />\n                  </div>";
-    htmlBody += htmlBodyLastChild;
-    document.querySelector('#modalForm').innerHTML = htmlBody;
-    if (!this.isEdit) document.querySelector('#modalForm .form-group:first-child').setAttribute('style', 'display: none;'); // Footer config
-
-    var btnConfirm = document.querySelector('#modalFooter #btnConfirm');
-    btnConfirm.textContent = this.isEdit ? 'Save' : 'Add';
-
-    btnConfirm.onclick = function () {
-      var _a;
-
-      btnConfirm.setAttribute('style', 'cursor: not-allowed;');
-      var itemId = document.querySelector('#itemId');
-      var name = document.querySelector('#name');
-      var createdAt = document.querySelector('#createdAt');
-      var createdBy = document.querySelector('#createdBy');
-      var modifiedAt = document.querySelector('#modifiedAt');
-      var modifiedBy = document.querySelector('#modifiedBy');
-      _a = [+itemId.value, name.value, createdAt.value, createdBy.value, modifiedAt.value, modifiedBy.value], _this.item.id = _a[0], _this.item.name = _a[1], _this.item.createdAt = _a[2], _this.item.createdBy = _a[3], _this.item.modifiedAt = _a[4], _this.item.modifiedBy = _a[5];
-
-      if (_this.isFile) {
-        var extension = document.querySelector('#extension');
-        _this.item.extension = extension.value;
-      } else {
-        var subFolders = document.querySelector('#subFolders');
-        _this.item.subFolders = subFolders.value;
-      }
-
-      if (_this.isEdit) {
-        _this.updateItem();
-      } else {
-        _this.addItem();
-      }
-    }; // Show Modal
-
-
-    document.querySelector('#formModal').setAttribute('style', 'display: block;');
+  Client.prototype.getExtension = function (fileName) {
+    return fileName.slice(fileName.lastIndexOf('.') + 1);
   };
 
   return Client;
@@ -554,6 +789,152 @@ var ready = function (fn) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _file_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_file.model */ "./src/scripts/utilities/_file.model.ts");
 /* harmony import */ var _folder_model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_folder.model */ "./src/scripts/utilities/_folder.model.ts");
+var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+var __generator = undefined && undefined.__generator || function (thisArg, body) {
+  var _ = {
+    label: 0,
+    sent: function () {
+      if (t[0] & 1) throw t[1];
+      return t[1];
+    },
+    trys: [],
+    ops: []
+  },
+      f,
+      y,
+      t,
+      g;
+  return g = {
+    next: verb(0),
+    "throw": verb(1),
+    "return": verb(2)
+  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+    return this;
+  }), g;
+
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+
+    while (_) try {
+      if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+      if (y = 0, t) op = [op[0] & 2, t.value];
+
+      switch (op[0]) {
+        case 0:
+        case 1:
+          t = op;
+          break;
+
+        case 4:
+          _.label++;
+          return {
+            value: op[1],
+            done: false
+          };
+
+        case 5:
+          _.label++;
+          y = op[1];
+          op = [0];
+          continue;
+
+        case 7:
+          op = _.ops.pop();
+
+          _.trys.pop();
+
+          continue;
+
+        default:
+          if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+            _ = 0;
+            continue;
+          }
+
+          if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+            _.label = op[1];
+            break;
+          }
+
+          if (op[0] === 6 && _.label < t[1]) {
+            _.label = t[1];
+            t = op;
+            break;
+          }
+
+          if (t && _.label < t[2]) {
+            _.label = t[2];
+
+            _.ops.push(op);
+
+            break;
+          }
+
+          if (t[2]) _.ops.pop();
+
+          _.trys.pop();
+
+          continue;
+      }
+
+      op = body.call(thisArg, _);
+    } catch (e) {
+      op = [6, e];
+      y = 0;
+    } finally {
+      f = t = 0;
+    }
+
+    if (op[0] & 5) throw op[1];
+    return {
+      value: op[0] ? op[1] : void 0,
+      done: true
+    };
+  }
+};
+/* eslint-disable no-shadow */
+
+/* eslint-disable no-else-return */
+
+/* eslint-disable no-throw-literal */
+
 /* eslint-disable no-prototype-builtins */
 
 /* eslint-disable no-param-reassign */
@@ -566,10 +947,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var HttpClient =
 /** @class */
 function () {
   function HttpClient() {
+    var _this = this;
+
     this.getAllItems = function () {
       return new Promise(function (resolve, reject) {
         setTimeout(function () {
@@ -588,18 +973,6 @@ function () {
           });
           if (foundItem) resolve(foundItem);else reject('Item Not Found');
         }, 1000);
-      });
-    };
-
-    this.getFolderItems = function (id) {
-      return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-          var result = JSON.parse(sessionStorage.getItem('data'));
-          var folderItems = result.filter(function (item) {
-            return !item.hasOwnProperty('extension') && item.id !== id;
-          });
-          if (folderItems) resolve(Array.from(folderItems));else reject('No Folder Items Found');
-        }, 0);
       });
     };
 
@@ -622,8 +995,6 @@ function () {
     this.updateItem = function (upItem) {
       return new Promise(function (resolve, reject) {
         setTimeout(function () {
-          var _a;
-
           var result = JSON.parse(sessionStorage.getItem('data'));
           var foundItem = result.find(function (item) {
             return item.id === upItem.id;
@@ -631,7 +1002,12 @@ function () {
 
           if (foundItem) {
             var index = result.indexOf(foundItem);
-            _a = [upItem.name, upItem.createdAt, upItem.createdBy, upItem.modifiedAt, upItem.modifiedBy], result[index].name = _a[0], result[index].createdAt = _a[1], result[index].createdBy = _a[2], result[index].modifiedAt = _a[3], result[index].modifiedBy = _a[4];
+            result[index].name = upItem.name;
+            result[index].createdAt = upItem.createdAt;
+            result[index].createdBy = upItem.createdBy;
+            result[index].modifiedAt = upItem.modifiedAt;
+            result[index].modifiedBy = upItem.modifiedBy;
+            if (upItem.hasOwnProperty('extension')) result[index].extension = upItem.extension;else result[index].subFolders = upItem.subFolders;
             sessionStorage.setItem('data', JSON.stringify(result));
             resolve('Successfully Updated!');
           } else reject('Item Not Found!');
@@ -669,6 +1045,56 @@ function () {
       data.push(item4);
       data.push(item5);
       sessionStorage.setItem('data', JSON.stringify(data));
+    };
+
+    this.getFolderItems = function (id) {
+      return __awaiter(_this, void 0, void 0, function () {
+        var mockDelay, result, folderItems;
+
+        var _this = this;
+
+        return __generator(this, function (_a) {
+          switch (_a.label) {
+            case 0:
+              mockDelay = function () {
+                return __awaiter(_this, void 0, void 0, function () {
+                  return __generator(this, function (_a) {
+                    return [2
+                    /*return*/
+                    , new Promise(function (resolve) {
+                      return setTimeout(function () {
+                        return resolve('abc');
+                      }, 1000);
+                    })];
+                  });
+                });
+              };
+
+              return [4
+              /*yield*/
+              , mockDelay()];
+
+            case 1:
+              _a.sent();
+
+              result = JSON.parse(sessionStorage.getItem('data'));
+              folderItems = result.filter(function (item) {
+                return !item.hasOwnProperty('extension') && item.id !== id;
+              });
+              folderItems = folderItems.filter(function (folder) {
+                return !folder.subFolders.find(function (subFolder) {
+                  return subFolder.id === id;
+                });
+              });
+              if (folderItems) return [2
+              /*return*/
+              , folderItems];else throw 'No Folder Item Found.';
+              return [2
+              /*return*/
+              ];
+          }
+        });
+      });
     };
 
     this.initialItemList();

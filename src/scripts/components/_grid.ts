@@ -8,25 +8,21 @@
 import Client from '../utilities/_client';
 
 const renderGrid = () => {
-  const client = new Client();
-
-  client.getAllItem();
-
   const modal: HTMLElement = document.querySelector('#formModal');
-
   const closeBtns: NodeListOf<HTMLElement> = document.querySelectorAll(
     '.modal .btn-close',
   );
+  const newFolder: HTMLElement = document.querySelector('#newFolder');
+  const newFile: HTMLElement = document.querySelector('#newFile');
+  const client = new Client();
+
+  client.getAllItem();
 
   closeBtns.forEach(btn => {
     btn.onclick = () => {
       modal.style.display = 'none';
     };
   });
-
-  const newFolder: HTMLElement = document.querySelector('#newFolder');
-
-  const newFile: HTMLElement = document.querySelector('#newFile');
 
   newFolder.onclick = () => {
     client.openModal(false, true, null);

@@ -312,6 +312,9 @@ button {
   z-index: 1;
   overflow: auto;
   width: 60%;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   left: 15%;
   top: 10rem;
   background: #dcdde1;
@@ -355,7 +358,19 @@ button {
   justify-content: center;
   justify-content: flex-start;
 }
-.modal-content-body .form-group label {
+.modal-content-body .form-group:last-child .form-control {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  border: none;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+.modal-content-body .form-group label, .modal-content-body .form-group p {
   flex-basis: 30%;
   max-width: 30%;
   height: 100%;

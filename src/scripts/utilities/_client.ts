@@ -22,6 +22,10 @@ export default class Client {
 
   item: any;
 
+  itemList: Array<Folder | CFile>;
+
+  folderList: Array<Folder | CFile>;
+
   constructor() {
     this.httpClient = new HttpClient();
     this.httpClient.initialItemList();
@@ -32,6 +36,7 @@ export default class Client {
       .getAllItems()
       .then((data: Array<Folder | CFile>) => {
         this.renderItemList(data);
+        this.itemList = data;
       })
       .catch(error => {
         alert(error);
@@ -88,77 +93,76 @@ export default class Client {
     }
   };
 
-  openModal(isFile: boolean, isNew: boolean, item: Folder | CFile) {
-    let htmlBodyLastChild = 'abc';
+  openModal = (isFile: boolean, isNew: boolean, item: Folder | CFile) => {
+    let htmlBodyLastChild = '';
     if (!isFile) {
       this.item = new Folder(0, '', '', '', '', '', []);
       this.isFile = false;
       if (isNew) {
         this.isEdit = false;
-        [
-          this.item.id,
-          this.item.name,
-          this.item.createdAt,
-          this.item.createdBy,
-          this.item.modifiedAt,
-          this.item.modifiedBy,
-          this.item.subFolders,
-        ] = [
-          0,
-          'Test Folder',
-          'A few seconds ago',
-          'Minh Thuan',
-          'A few seconds ago',
-          'Minh Thuan',
-          [],
-        ];
+        this.item.id = 0;
+        this.item.name = 'Test Folder';
+        this.item.createdAt = 'A few seconds ago';
+        this.item.createdBy = 'Minh Thuan';
+        this.item.modifiedAt = 'A few seconds ago';
+        this.item.modifiedBy = 'Minh Thuan';
+        this.item.subFolders = [];
       } else {
         this.isEdit = true;
         this.item = item;
       }
 
-      this.httpClient
-        .getFolderItems(this.item.id)
-        .then((data: Array<Folder>) => {
-          htmlBodyLastChild = `<div class="form-group">
-                                <p>Sub Folders</p>`;
-          data.forEach(item => {
-            htmlBodyLastChild += `<label>
-                                    <input name="folderId" type="checkbox" class="input-checkbox" value="${item.id}">${item.name}
-                                  </label>`;
-          });
-          htmlBodyLastChild += `</div>`;
-        })
-        .catch(error => {
-          console.log(error);
-          htmlBodyLastChild = `<div class="form-group">
-                                <p>Sub Folders</p>
-                                <p>None</p>
-                              </div>`;
-        });
+      htmlBodyLastChild = `<div class="form-group">
+                            <p>Sub Folders</p>
+                            <div class="form-control">`;
 
-      console.log(htmlBodyLastChild);
+      this.folderList = this.itemList.filter(
+        item =>
+          !item.hasOwnProperty('extension') &&
+          item.id !== this.item.id,
+      );
+
+      this.folderList = this.folderList.filter(
+        (folder: Folder) =>
+          !folder.subFolders.find(
+            subFolder => subFolder.id === this.item.id,
+          ),
+      );
+
+      console.log(this.folderList);
+
+      if (this.folderList.length > 0) {
+        this.folderList.forEach(item => {
+          htmlBodyLastChild += `<label>
+                                  <input name="subFolder" type="checkbox" class="input-checkbox" value="${
+                                    item.id
+                                  }" ${
+            this.item.subFolders.find(
+              (folder: Folder) => folder.id === item.id,
+            )
+              ? 'checked'
+              : ''
+          }>${item.name}
+                                </label>`;
+        });
+      } else {
+        htmlBodyLastChild += `<p>None</>`;
+      }
+
+      htmlBodyLastChild += `</div>
+                          </div>`;
     } else {
       this.isFile = true;
       this.item = new CFile(0, '', '', '', '', '', '');
       if (isNew) {
-        [
-          this.item.id,
-          this.item.name,
-          this.item.createdAt,
-          this.item.createdBy,
-          this.item.modifiedAt,
-          this.item.modifiedBy,
-          this.item.extension,
-        ] = [
-          0,
-          'Test File',
-          'A few seconds ago',
-          'Minh Thuan',
-          'A few seconds ago',
-          'Minh Thuan',
-          'xlsx',
-        ];
+        this.isEdit = false;
+        this.item.id = 0;
+        this.item.name = 'TestFile.xlsx';
+        this.item.createdAt = 'A few seconds ago';
+        this.item.createdBy = 'Minh Thuan';
+        this.item.modifiedAt = 'A few seconds ago';
+        this.item.modifiedBy = 'Minh Thuan';
+        this.item.extension = this.getExtension(this.item.name);
       } else {
         this.isEdit = true;
         this.item = item;
@@ -175,6 +179,15 @@ export default class Client {
                           </div>`;
     }
 
+    this.renderModal(htmlBodyLastChild);
+
+    // Show Modal
+    document
+      .querySelector('#formModal')
+      .setAttribute('style', 'display: block;');
+  }
+
+  renderModal = (htmlBodyLastChild: string) => {
     // Header config
     const headerText = `${this.isEdit ? 'Update' : 'Add New'} ${
       this.isFile ? 'File' : 'Folder'
@@ -264,71 +277,86 @@ export default class Client {
 
     btnConfirm.onclick = () => {
       btnConfirm.setAttribute('style', 'cursor: not-allowed;');
-      const itemId: HTMLInputElement = document.querySelector(
-        '#itemId',
-      );
-      const name: HTMLInputElement = document.querySelector('#name');
-      const createdAt: HTMLInputElement = document.querySelector(
-        '#createdAt',
-      );
-      const createdBy: HTMLInputElement = document.querySelector(
-        '#createdBy',
-      );
-      const modifiedAt: HTMLInputElement = document.querySelector(
-        '#modifiedAt',
-      );
-      const modifiedBy: HTMLInputElement = document.querySelector(
-        '#modifiedBy',
-      );
-      [
-        this.item.id,
-        this.item.name,
-        this.item.createdAt,
-        this.item.createdBy,
-        this.item.modifiedAt,
-        this.item.modifiedBy,
-      ] = [
-        +itemId.value,
-        name.value,
-        createdAt.value,
-        createdBy.value,
-        modifiedAt.value,
-        modifiedBy.value,
-      ];
-
-      if (this.isFile) {
-        const extension: HTMLInputElement = document.querySelector(
-          '#extension',
-        );
-        this.item.extension = extension.value;
-      } else {
-        const subFolders: HTMLInputElement = document.querySelector(
-          '#subFolders',
-        );
-        this.item.subFolders = subFolders.value;
-      }
-
-      if (this.isEdit) {
-        this.updateItem();
-      } else {
-        this.addItem();
-      }
+      this.confirmModal();
     };
+  };
 
-    // Show Modal
+  confirmModal = () => {
+    const itemId: HTMLInputElement = document.querySelector(
+      '#itemId',
+    );
+    const name: HTMLInputElement = document.querySelector('#name');
+    const createdAt: HTMLInputElement = document.querySelector(
+      '#createdAt',
+    );
+    const createdBy: HTMLInputElement = document.querySelector(
+      '#createdBy',
+    );
+    const modifiedAt: HTMLInputElement = document.querySelector(
+      '#modifiedAt',
+    );
+    const modifiedBy: HTMLInputElement = document.querySelector(
+      '#modifiedBy',
+    );
+    this.item.id = +itemId.value;
+    this.item.name = name.value;
+    this.item.createdAt = createdAt.value;
+    this.item.createdBy = createdBy.value;
+    this.item.modifiedAt = modifiedAt.value;
+    this.item.modifiedBy = modifiedBy.value;
+
+    if (this.isFile) {
+      const extension: HTMLInputElement = document.querySelector(
+        '#extension',
+      );
+      extension.value = this.getExtension(this.item.name);
+      this.item.extension = extension.value;
+    } else {
+      const subFolders = document.getElementsByName('subFolder');
+
+      subFolders.forEach(subFolder => {
+        const temp = <HTMLInputElement>subFolder;
+        let subFolders: Array<Folder> = [];
+        if (temp.checked === true) {
+          subFolders.push(
+            <Folder>(
+              this.folderList.find(
+                folder => folder.id === +temp.value,
+              )
+            ),
+          );
+        }
+        this.item.subFolders = subFolders;
+      });
+    }
+
+    if (this.isEdit) this.updateItem();
+    else this.addItem();
+  };
+
+  hideModal = () => {
+    this.getAllItem();
     document
       .querySelector('#formModal')
-      .setAttribute('style', 'display: block;');
-  }
+      .setAttribute('style', 'display: none;');
+    this.reloadModalBtn();
+  };
+
+  reloadModalBtn = () => {
+    document
+      .querySelector('#modalFooter #btnConfirm')
+      .setAttribute('style', 'cursor: pointer;');
+  };
 
   addItem = () => {
     this.httpClient
       .addItem(this.item)
       .then(message => {
-        this.reloadModal();
+        this.hideModal();
         alert(message);
       })
       .catch(error => {
+        this.reloadModalBtn();
         alert(error);
       });
   };
@@ -337,10 +365,11 @@ export default class Client {
     this.httpClient
       .updateItem(this.item)
       .then(message => {
-        this.reloadModal();
+        this.hideModal();
         alert(message);
       })
       .catch(error => {
+        this.reloadModalBtn();
         alert(error);
       });
   };
@@ -359,13 +388,17 @@ export default class Client {
     }
   };
 
-  reloadModal = () => {
-    this.getAllItem();
-    document
-      .querySelector('#formModal')
-      .setAttribute('style', 'display: none;');
-    document
-      .querySelector('#modalFooter #btnConfirm')
-      .setAttribute('style', 'cursor: pointer;');
+  getExtension(fileName: string){
+    return fileName.slice(fileName.lastIndexOf('.') + 1);
+  }
+
+  // function to test async/ await
+  getFolderItems = async () => {
+    try {
+      this.folderList = await this.httpClient.getFolderItems(this.item.id);
+      console.log(this.folderList);
+    } catch (ex) {
+      alert(ex);
+    }
   };
 }

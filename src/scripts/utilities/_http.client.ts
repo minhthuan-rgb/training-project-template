@@ -1,3 +1,6 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-else-return */
+/* eslint-disable no-throw-literal */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-param-reassign */
 /* eslint-disable prefer-promise-reject-errors */
@@ -34,22 +37,6 @@ export default class HttpClient {
     });
   };
 
-  getFolderItems = (id: number) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const result: Array<Folder | CFile> = JSON.parse(
-          sessionStorage.getItem('data'),
-        );
-        const folderItems = result.filter(
-          item => !item.hasOwnProperty('extension') && item.id !== id,
-        );
-
-        if (folderItems) resolve(Array.from(folderItems));
-        else reject('No Folder Items Found');
-      }, 0);
-    });
-  };
-
   addItem = (addItem: Folder | CFile) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -68,28 +55,24 @@ export default class HttpClient {
     });
   };
 
-  updateItem = (upItem: Folder | CFile) => {
+  updateItem = (upItem: any) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        const result: Array<Folder | CFile> = JSON.parse(
+        const result: Array<any> = JSON.parse(
           sessionStorage.getItem('data'),
         );
         const foundItem = result.find(item => item.id === upItem.id);
         if (foundItem) {
           const index = result.indexOf(foundItem);
-          [
-            result[index].name,
-            result[index].createdAt,
-            result[index].createdBy,
-            result[index].modifiedAt,
-            result[index].modifiedBy,
-          ] = [
-            upItem.name,
-            upItem.createdAt,
-            upItem.createdBy,
-            upItem.modifiedAt,
-            upItem.modifiedBy,
-          ];
+          result[index].name = upItem.name;
+          result[index].createdAt = upItem.createdAt;
+          result[index].createdBy = upItem.createdBy;
+          result[index].modifiedAt = upItem.modifiedAt;
+          result[index].modifiedBy = upItem.modifiedBy;
+
+          if (upItem.hasOwnProperty('extension'))
+            result[index].extension = upItem.extension;
+          else result[index].subFolders = upItem.subFolders;
           sessionStorage.setItem('data', JSON.stringify(result));
           resolve('Successfully Updated!');
         } else reject('Item Not Found!');
@@ -172,5 +155,31 @@ export default class HttpClient {
     data.push(item5);
 
     sessionStorage.setItem('data', JSON.stringify(data));
+  };
+
+  getFolderItems = async (id: number) => {
+    const mockDelay = async () => {
+      return new Promise(resolve =>
+        setTimeout(() => resolve('abc'), 1000),
+      );
+    };
+
+    await mockDelay();
+
+    const result: Array<Folder | CFile> = JSON.parse(
+      sessionStorage.getItem('data'),
+    );
+
+    let folderItems = result.filter(
+      item => !item.hasOwnProperty('extension') && item.id !== id,
+    );
+
+    folderItems = folderItems.filter(
+      (folder: Folder) =>
+        !folder.subFolders.find(subFolder => subFolder.id === id),
+    );
+
+    if (folderItems) return folderItems;
+    else throw 'No Folder Item Found.';
   };
 }
