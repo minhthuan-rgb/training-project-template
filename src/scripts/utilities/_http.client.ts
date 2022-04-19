@@ -175,8 +175,7 @@ export default class HttpClient {
     );
 
     folderItems = folderItems.filter(
-      (folder: Folder) =>
-        !folder.subFolders.find(subFolder => subFolder.id === id),
+      (folder: Folder) => !(folder.subFolders.id === id),
     );
 
     if (folderItems) return folderItems;

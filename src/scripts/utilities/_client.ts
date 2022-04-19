@@ -93,10 +93,14 @@ export default class Client {
     }
   };
 
-  openModal = (isFile: boolean, isNew: boolean, item: Folder | CFile) => {
+  openModal = (
+    isFile: boolean,
+    isNew: boolean,
+    item: Folder | CFile,
+  ) => {
     let htmlBodyLastChild = '';
     if (!isFile) {
-      this.item = new Folder(0, '', '', '', '', '', []);
+      this.item = new Folder();
       this.isFile = false;
       if (isNew) {
         this.isEdit = false;
@@ -106,15 +110,13 @@ export default class Client {
         this.item.createdBy = 'Minh Thuan';
         this.item.modifiedAt = 'A few seconds ago';
         this.item.modifiedBy = 'Minh Thuan';
-        this.item.subFolders = [];
       } else {
         this.isEdit = true;
         this.item = item;
       }
 
       htmlBodyLastChild = `<div class="form-group">
-                            <p>Sub Folders</p>
-                            <div class="form-control">`;
+                            <p>Sub Folders</p>`;
 
       this.folderList = this.itemList.filter(
         item =>
@@ -122,38 +124,24 @@ export default class Client {
           item.id !== this.item.id,
       );
 
-      this.folderList = this.folderList.filter(
-        (folder: Folder) =>
-          !folder.subFolders.find(
-            subFolder => subFolder.id === this.item.id,
-          ),
-      );
-
-      console.log(this.folderList);
-
       if (this.folderList.length > 0) {
+        htmlBodyLastChild += `<select id="subFolders" name="subFolders" class="form-control">
+                                <option selected value="none">None</option>`;
         this.folderList.forEach(item => {
-          htmlBodyLastChild += `<label>
-                                  <input name="subFolder" type="checkbox" class="input-checkbox" value="${
-                                    item.id
-                                  }" ${
-            this.item.subFolders.find(
-              (folder: Folder) => folder.id === item.id,
-            )
-              ? 'checked'
-              : ''
-          }>${item.name}
-                                </label>`;
+          htmlBodyLastChild += `<option value="${item.id}" ${this.item.subFolders !== null ? 
+            (this.item.subFolders.id === item.id ? 'selected' : '') : ''
+          }>${item.name}</option>`;
         });
+        htmlBodyLastChild += `</select>`;
       } else {
-        htmlBodyLastChild += `<p>None</>`;
+        htmlBodyLastChild += `<p>None</p>`;
       }
 
       htmlBodyLastChild += `</div>
                           </div>`;
     } else {
       this.isFile = true;
-      this.item = new CFile(0, '', '', '', '', '', '');
+      this.item = new CFile();
       if (isNew) {
         this.isEdit = false;
         this.item.id = 0;
@@ -185,7 +173,7 @@ export default class Client {
     document
       .querySelector('#formModal')
       .setAttribute('style', 'display: block;');
-  }
+  };
 
   renderModal = (htmlBodyLastChild: string) => {
     // Header config
@@ -312,21 +300,21 @@ export default class Client {
       extension.value = this.getExtension(this.item.name);
       this.item.extension = extension.value;
     } else {
-      const subFolders = document.getElementsByName('subFolder');
-
+      const subFolders = Array.from(
+        <HTMLOptionsCollection>(
+          document.querySelector('#subFolders').children
+        ),
+      );
       subFolders.forEach(subFolder => {
-        const temp = <HTMLInputElement>subFolder;
-        let subFolders: Array<Folder> = [];
-        if (temp.checked === true) {
-          subFolders.push(
-            <Folder>(
+        if (subFolder.selected === true) {
+          if (subFolder.value === 'none') this.item.subFolders = null;
+          else
+            this.item.subFolders = <Folder>(
               this.folderList.find(
-                folder => folder.id === +temp.value,
+                folder => folder.id === +subFolder.value,
               )
-            ),
-          );
+            );
         }
-        this.item.subFolders = subFolders;
       });
     }
 
@@ -388,14 +376,16 @@ export default class Client {
     }
   };
 
-  getExtension(fileName: string){
+  getExtension(fileName: string) {
     return fileName.slice(fileName.lastIndexOf('.') + 1);
   }
 
   // function to test async/ await
   getFolderItems = async () => {
     try {
-      this.folderList = await this.httpClient.getFolderItems(this.item.id);
+      this.folderList = await this.httpClient.getFolderItems(
+        this.item.id,
+      );
       console.log(this.folderList);
     } catch (ex) {
       alert(ex);

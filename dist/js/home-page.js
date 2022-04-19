@@ -415,7 +415,7 @@ function () {
       var htmlBodyLastChild = '';
 
       if (!isFile) {
-        _this.item = new _folder_model__WEBPACK_IMPORTED_MODULE_1__["default"](0, '', '', '', '', '', []);
+        _this.item = new _folder_model__WEBPACK_IMPORTED_MODULE_1__["default"]();
         _this.isFile = false;
 
         if (isNew) {
@@ -426,37 +426,32 @@ function () {
           _this.item.createdBy = 'Minh Thuan';
           _this.item.modifiedAt = 'A few seconds ago';
           _this.item.modifiedBy = 'Minh Thuan';
-          _this.item.subFolders = [];
         } else {
           _this.isEdit = true;
           _this.item = item;
         }
 
-        htmlBodyLastChild = "<div class=\"form-group\">\n                            <p>Sub Folders</p>\n                            <div class=\"form-control\">";
+        htmlBodyLastChild = "<div class=\"form-group\">\n                            <p>Sub Folders</p>";
         _this.folderList = _this.itemList.filter(function (item) {
           return !item.hasOwnProperty('extension') && item.id !== _this.item.id;
         });
-        _this.folderList = _this.folderList.filter(function (folder) {
-          return !folder.subFolders.find(function (subFolder) {
-            return subFolder.id === _this.item.id;
-          });
-        });
-        console.log(_this.folderList);
 
         if (_this.folderList.length > 0) {
+          htmlBodyLastChild += "<select id=\"subFolders\" name=\"subFolders\" class=\"form-control\">\n                                <option selected value=\"none\">None</option>";
+
           _this.folderList.forEach(function (item) {
-            htmlBodyLastChild += "<label>\n                                  <input name=\"subFolder\" type=\"checkbox\" class=\"input-checkbox\" value=\"" + item.id + "\" " + (_this.item.subFolders.find(function (folder) {
-              return folder.id === item.id;
-            }) ? 'checked' : '') + ">" + item.name + "\n                                </label>";
+            htmlBodyLastChild += "<option value=\"" + item.id + "\" " + (_this.item.subFolders !== null ? _this.item.subFolders.id === item.id ? 'selected' : '' : '') + ">" + item.name + "</option>";
           });
+
+          htmlBodyLastChild += "</select>";
         } else {
-          htmlBodyLastChild += "<p>None</>";
+          htmlBodyLastChild += "<p>None</p>";
         }
 
         htmlBodyLastChild += "</div>\n                          </div>";
       } else {
         _this.isFile = true;
-        _this.item = new _file_model__WEBPACK_IMPORTED_MODULE_0__["default"](0, '', '', '', '', '', '');
+        _this.item = new _file_model__WEBPACK_IMPORTED_MODULE_0__["default"]();
 
         if (isNew) {
           _this.isEdit = false;
@@ -520,18 +515,13 @@ function () {
         extension.value = _this.getExtension(_this.item.name);
         _this.item.extension = extension.value;
       } else {
-        var subFolders = document.getElementsByName('subFolder');
+        var subFolders = Array.from(document.querySelector('#subFolders').children);
         subFolders.forEach(function (subFolder) {
-          var temp = subFolder;
-          var subFolders = [];
-
-          if (temp.checked === true) {
-            subFolders.push(_this.folderList.find(function (folder) {
-              return folder.id === +temp.value;
-            }));
+          if (subFolder.selected === true) {
+            if (subFolder.value === 'none') _this.item.subFolders = null;else _this.item.subFolders = _this.folderList.find(function (folder) {
+              return folder.id === +subFolder.value;
+            });
           }
-
-          _this.item.subFolders = subFolders;
         });
       }
 
@@ -683,6 +673,34 @@ function (_super) {
   __extends(CFile, _super);
 
   function CFile(id, name, createAt, createdBy, modifiedAt, modifiedBy, extension) {
+    if (id === void 0) {
+      id = 0;
+    }
+
+    if (name === void 0) {
+      name = '';
+    }
+
+    if (createAt === void 0) {
+      createAt = '';
+    }
+
+    if (createdBy === void 0) {
+      createdBy = '';
+    }
+
+    if (modifiedAt === void 0) {
+      modifiedAt = '';
+    }
+
+    if (modifiedBy === void 0) {
+      modifiedBy = '';
+    }
+
+    if (extension === void 0) {
+      extension = '';
+    }
+
     var _this = _super.call(this, id, name, createAt, createdBy, modifiedAt, modifiedBy) || this;
 
     _this.extension = extension;
@@ -740,8 +758,32 @@ function (_super) {
   __extends(Folder, _super);
 
   function Folder(id, name, createAt, createdBy, modifiedAt, modifiedBy, subFolders) {
+    if (id === void 0) {
+      id = 0;
+    }
+
+    if (name === void 0) {
+      name = '';
+    }
+
+    if (createAt === void 0) {
+      createAt = '';
+    }
+
+    if (createdBy === void 0) {
+      createdBy = '';
+    }
+
+    if (modifiedAt === void 0) {
+      modifiedAt = '';
+    }
+
+    if (modifiedBy === void 0) {
+      modifiedBy = '';
+    }
+
     if (subFolders === void 0) {
-      subFolders = [];
+      subFolders = null;
     }
 
     var _this = _super.call(this, id, name, createAt, createdBy, modifiedAt, modifiedBy) || this;
@@ -1082,9 +1124,7 @@ function () {
                 return !item.hasOwnProperty('extension') && item.id !== id;
               });
               folderItems = folderItems.filter(function (folder) {
-                return !folder.subFolders.find(function (subFolder) {
-                  return subFolder.id === id;
-                });
+                return !(folder.subFolders.id === id);
               });
               if (folderItems) return [2
               /*return*/
