@@ -7,13 +7,13 @@ export default class CFile extends Base {
   constructor(
     id: number = 0,
     name: string = '',
-    createAt: string = '',
+    createdAt: string = '',
     createdBy: string = '',
     modifiedAt: string = '',
     modifiedBy: string = '',
     extension: string = '',
   ) {
-    super(id, name, createAt, createdBy, modifiedAt, modifiedBy);
+    super(id, name, createdAt, createdBy, modifiedAt, modifiedBy);
     this.extension = extension;
   }
 }

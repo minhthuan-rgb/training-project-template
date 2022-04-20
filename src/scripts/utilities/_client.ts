@@ -103,12 +103,14 @@ export default class Client {
         this.item.id = 0;
         this.item.name = 'Test Folder';
         this.item.createdAt = 'A few seconds ago';
-        this.item.createdBy = 'Minh Thuan';
-        this.item.modifiedAt = 'A few seconds ago';
-        this.item.modifiedBy = 'Minh Thuan';
+        this.item.createdBy = document.querySelector('#username').textContent;
+        this.item.modifiedAt = 'Nerver';
+        this.item.modifiedBy = 'None';
       } else {
         this.isEdit = true;
         this.item = item;
+        this.item.modifiedBy = document.querySelector('#username').textContent;
+        this.item.ModifiedAt = 'A few seconds ago';
       }
 
       htmlBodyLastChild = `<div class="form-group">
@@ -145,15 +147,17 @@ export default class Client {
       if (isNew) {
         this.isEdit = false;
         this.item.id = 0;
-        this.item.name = 'TestFile.xlsx';
         this.item.createdAt = 'A few seconds ago';
-        this.item.createdBy = 'Minh Thuan';
-        this.item.modifiedAt = 'A few seconds ago';
-        this.item.modifiedBy = 'Minh Thuan';
-        this.item.extension = this.getExtension(this.item.name);
+        this.item.createdBy = document.querySelector('#username').textContent;;
+        this.item.modifiedAt = 'Never';
+        this.item.modifiedBy = 'None';
+        [this.item.name, this.item.extension] = this.splitFileName('TestFile.xlsx');
       } else {
         this.isEdit = true;
         this.item = item;
+        this.item.modifiedBy = document.querySelector('#username').textContent;
+        this.item.modifiedAt = 'A few seconds ago';
+        [this.item.name, this.item.extension] = this.splitFileName(this.item.name);
       }
       htmlBodyLastChild = `<div class="form-group">
                             <label for="extension">Extension</label>
@@ -223,6 +227,7 @@ export default class Client {
                       id="modifiedBy"
                       type="text"
                       name="ModifiedBy"
+                      disabled
                       value="${this.item.modifiedBy}"
                     />
                   </div>
@@ -244,6 +249,7 @@ export default class Client {
                       id="createdBy"
                       type="text"
                       name="CreateBy"
+                      disabled
                       value="${this.item.createdBy}"
                     />
                   </div>`;
@@ -297,8 +303,8 @@ export default class Client {
       const extension: HTMLInputElement = document.querySelector(
         '#extension',
       );
-      extension.value = this.getExtension(this.item.name);
       this.item.extension = extension.value;
+      this.item.name = `${this.item.name}.${this.item.extension}`;
     } else {
       if (this.folderList.length > 0) {
         const subFolders = Array.from(
@@ -312,7 +318,7 @@ export default class Client {
             else this.item.subFolderId = +subFolder.value;
           }
         });
-      }
+      } else this.item.subFolderId = 0;
     }
 
     if (this.isEdit) this.updateItem();
@@ -373,9 +379,9 @@ export default class Client {
     }
   };
 
-  getExtension(fileName: string) {
-    return fileName.slice(fileName.lastIndexOf('.') + 1);
-  }
+  splitFileName(fullName: string) {
+    return [fullName.slice(0, fullName.lastIndexOf('.')),fullName.slice(fullName.lastIndexOf('.') + 1)];
+  } 
 
   // function to test async/ await
   getFolderItems = async () => {

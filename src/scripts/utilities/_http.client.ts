@@ -11,65 +11,10 @@ import CFile from './_file.model';
 import Folder from './_folder.model';
 
 export default class HttpClient {
-  BASE_URL: string = 'https://localhost:44302/';
-
+  // #region Old
   constructor() {
     this.initialItemList();
   }
-
-  getAllFolders = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        const result = await fetch(
-          `${this.BASE_URL}api/API/get-all-folders`,
-        )
-          .then(res => res.json())
-          .then(res => {
-            return Array.from(res);
-          });
-        if (result) resolve(result);
-        else reject('No Data');
-      }, 1000);
-    });
-  };
-
-  getAllFiles = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        const result = await fetch(
-          `${this.BASE_URL}api/API/get-all-files`,
-        )
-          .then(res => res.json())
-          .then(res => {
-            return Array.from(res);
-          });
-        if (result) resolve(result);
-        else reject('No Data');
-      }, 1000);
-    });
-  };
-
-  getAllItemsFromAPI = async () => {
-    const itemList: Array<CFile | Folder> = [];
-
-    this.getAllFolders().then((data: Array<Folder>) => {
-      data.forEach(d => itemList.push(d));
-    });
-
-    this.getAllFiles().then((data: Array<CFile>) => {
-      data.forEach(d => itemList.push(d));
-    });
-
-    const mockDelay = async () => {
-      return new Promise(resolve =>
-        setTimeout(() => resolve('Delay'), 3000),
-      );
-    };
-
-    await mockDelay();
-    if (itemList) return itemList;
-    else throw 'No Item Found';
-  };
 
   getAllItems = () => {
     return new Promise((resolve, reject) => {
@@ -94,34 +39,6 @@ export default class HttpClient {
     });
   };
 
-  addItemToAPI = (addItem: Folder | CFile) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        const result = await fetch(
-          `${this.BASE_URL}${
-            addItem.hasOwnProperty('extension')
-              ? 'api/API/create-file'
-              : 'api/API/create-folder'
-          }`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(addItem),
-          },
-        )
-          .then(res => res.json())
-          .then(res => {
-            return res;
-          });
-
-        if (result === true) resolve('Successfully Added!');
-        else reject('Unsuccessfully Add!');
-      }, 1000);
-    });
-  };
-
   addItem = (addItem: Folder | CFile) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -136,34 +53,6 @@ export default class HttpClient {
           sessionStorage.setItem('data', JSON.stringify(result));
           resolve('Successfully Added!');
         }
-      }, 1000);
-    });
-  };
-
-  updateItemToAPI = (upItem: Folder | CFile) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        const result = await fetch(
-          `${this.BASE_URL}${
-            upItem.hasOwnProperty('extension')
-              ? 'api/API/update-file'
-              : 'api/API/update-folder'
-          }`,
-          {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(upItem),
-          },
-        )
-          .then(res => res.json())
-          .then(res => {
-            return res;
-          });
-
-        if (result === true) resolve('Successfully Updated!');
-        else reject('Unsuccessfully Update');
       }, 1000);
     });
   };
@@ -190,32 +79,6 @@ export default class HttpClient {
           resolve('Successfully Updated!');
         } else reject('Item Not Found!');
       }, 1000);
-    });
-  };
-
-  removeItemToAPI = (id: number, isFile: boolean) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        const result = await fetch(
-          `${this.BASE_URL}${
-            isFile ? 'api/API/delete-file' : 'api/API/delete-folder'
-          }`,
-          {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(id),
-          },
-        )
-          .then(res => res.json())
-          .then(res => {
-            return res;
-          });
-
-        if (result === true) resolve('Successfully Deleled!');
-        else reject('Unsuccessfully Delete!');
-      }, 500);
     });
   };
 
@@ -320,4 +183,145 @@ export default class HttpClient {
     if (folderItems) return folderItems;
     else throw 'No Folder Item Found.';
   };
+  // #endregion
+
+  // #region New
+  BASE_URL: string = 'https://localhost:44302/';
+
+  getAllFolders = () => {
+    return new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        const result = await fetch(
+          `${this.BASE_URL}api/API/get-all-folders`,
+        )
+          .then(res => res.json())
+          .then(res => {
+            return Array.from(res);
+          });
+        if (result) resolve(result);
+        else reject('No Data');
+      }, 1000);
+    });
+  };
+
+  getAllFiles = () => {
+    return new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        const result = await fetch(
+          `${this.BASE_URL}api/API/get-all-files`,
+        )
+          .then(res => res.json())
+          .then(res => {
+            return Array.from(res);
+          });
+        if (result) resolve(result);
+        else reject('No Data');
+      }, 1000);
+    });
+  };
+
+  getAllItemsFromAPI = async () => {
+    const itemList: Array<CFile | Folder> = [];
+
+    this.getAllFolders().then((data: Array<Folder>) => {
+      data.forEach(d => itemList.push(d));
+    });
+
+    this.getAllFiles().then((data: Array<CFile>) => {
+      data.forEach(d => itemList.push(d));
+    });
+
+    const mockDelay = async () => {
+      return new Promise(resolve =>
+        setTimeout(() => resolve('Delay'), 3500),
+      );
+    };
+
+    await mockDelay();
+    if (itemList) return itemList;
+    else throw 'No Item Found';
+  };
+
+  addItemToAPI = (addItem: Folder | CFile) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        const result = await fetch(
+          `${this.BASE_URL}${
+            addItem.hasOwnProperty('extension')
+              ? 'api/API/create-file'
+              : 'api/API/create-folder'
+          }`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(addItem),
+          },
+        )
+          .then(res => res.json())
+          .then(res => {
+            return res;
+          });
+
+        if (result === true) resolve('Successfully Added!');
+        else reject('Unsuccessfully Add!');
+      }, 1000);
+    });
+  };
+
+  updateItemToAPI = (upItem: Folder | CFile) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        const result = await fetch(
+          `${this.BASE_URL}${
+            upItem.hasOwnProperty('extension')
+              ? 'api/API/update-file'
+              : 'api/API/update-folder'
+          }`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(upItem),
+          },
+        )
+          .then(res => res.json())
+          .then(res => {
+            return res;
+          });
+
+        if (result === true) resolve('Successfully Updated!');
+        else reject('Unsuccessfully Update');
+      }, 1000);
+    });
+  };
+
+  removeItemToAPI = (id: number, isFile: boolean) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        const result = await fetch(
+          `${this.BASE_URL}${
+            isFile ? 'api/API/delete-file' : 'api/API/delete-folder'
+          }`,
+          {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(id),
+          },
+        )
+          .then(res => res.json())
+          .then(res => {
+            return res;
+          });
+
+        if (result === true) resolve('Successfully Deleled!');
+        else reject('Unsuccessfully Delete!');
+      }, 500);
+    });
+  };
+  // #endregion
 }

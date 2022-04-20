@@ -7,13 +7,13 @@ export default class Folder extends Base {
   constructor(
     id: number = 0,
     name: string = '',
-    createAt: string = '',
+    createdAt: string = '',
     createdBy: string = '',
     modifiedAt: string = '',
     modifiedBy: string = '',
     subFolderId: number = 0,
   ) {
-    super(id, name, createAt, createdBy, modifiedAt, modifiedBy);
+    super(id, name, createdAt, createdBy, modifiedAt, modifiedBy);
     this.subFolderId = subFolderId;
   }
 }
