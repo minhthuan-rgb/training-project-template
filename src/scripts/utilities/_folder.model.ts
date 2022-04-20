@@ -2,7 +2,7 @@
 import Base from './_base.model';
 
 export default class Folder extends Base {
-  subFolders: Folder;
+  subFolderId: number;
 
   constructor(
     id: number = 0,
@@ -11,9 +11,9 @@ export default class Folder extends Base {
     createdBy: string = '',
     modifiedAt: string = '',
     modifiedBy: string = '',
-    subFolders: Folder = null,
+    subFolderId: number = 0,
   ) {
     super(id, name, createAt, createdBy, modifiedAt, modifiedBy);
-    this.subFolders = subFolders;
+    this.subFolderId = subFolderId;
   }
 }

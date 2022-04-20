@@ -73,12 +73,13 @@
     &-header {
       margin-bottom: getSpacing(2);
       @include flex-config;
-      
+
       .btn-close {
         background: transparent;
         border: none;
 
-        &:hover, &:focus {
+        &:hover,
+        &:focus {
           color: $colorBlack;
         }
       }
@@ -92,7 +93,7 @@
 
     &-body {
       margin-bottom: getSpacing(2);
-      .form-group{
+      .form-group {
         height: $heightModalInput;
         margin-bottom: $defaultSpacing;
         @include flex-config;
@@ -108,7 +109,8 @@
           }
         }
 
-        label, p {
+        label,
+        p {
           flex-basis: 30%;
           max-width: 30%;
           height: 100%;
@@ -123,7 +125,11 @@
           max-width: 70%;
           height: 100%;
           border-radius: getBorderRadius(0.5);
-          @include draw-border($defaultWidthBorder, $colorBlack, full);
+          @include draw-border(
+            $defaultWidthBorder,
+            $colorBlack,
+            full
+          );
 
           &:disabled {
             background: $colorWhiteSmoke;

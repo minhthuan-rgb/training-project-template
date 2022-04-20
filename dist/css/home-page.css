@@ -370,7 +370,8 @@ button {
   height: -moz-fit-content;
   height: fit-content;
 }
-.modal-content-body .form-group label, .modal-content-body .form-group p {
+.modal-content-body .form-group label,
+.modal-content-body .form-group p {
   flex-basis: 30%;
   max-width: 30%;
   height: 100%;

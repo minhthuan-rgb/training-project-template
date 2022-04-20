@@ -31,24 +31,17 @@ export default class Client {
     this.httpClient.initialItemList();
   }
 
-  getAllItem = () => {
-    this.httpClient
-      .getAllItems()
-      .then((data: Array<Folder | CFile>) => {
-        this.renderItemList(data);
-        this.itemList = data;
-      })
-      .catch(error => {
-        alert(error);
-      });
+  getAllItem = async () => {
+    this.itemList = await this.httpClient.getAllItemsFromAPI();
+    this.renderItemList();
   };
 
-  renderItemList = (itemList: Array<Folder | CFile>) => {
+  renderItemList = () => {
     // const html = items.map ((item) => `html`).join('');
 
     let html = '';
 
-    itemList.forEach(item => {
+    this.itemList.forEach(item => {
       const iconClass = item.hasOwnProperty('extension')
         ? 'fa-file-excel'
         : 'fa-folder-open';
@@ -81,13 +74,16 @@ export default class Client {
 
     for (let i = 0; i < deleteBtns.length; i++) {
       deleteBtns[i].addEventListener('click', () => {
-        this.deleteItem(itemList[i].id);
+        this.deleteItem(
+          this.itemList[i].id,
+          this.itemList[i].hasOwnProperty('extension'),
+        );
       });
       editBtns[i].addEventListener('click', () => {
         this.openModal(
-          itemList[i].hasOwnProperty('extension'),
+          this.itemList[i].hasOwnProperty('extension'),
           false,
-          itemList[i],
+          this.itemList[i],
         );
       });
     }
@@ -128,8 +124,12 @@ export default class Client {
         htmlBodyLastChild += `<select id="subFolders" name="subFolders" class="form-control">
                                 <option selected value="none">None</option>`;
         this.folderList.forEach(item => {
-          htmlBodyLastChild += `<option value="${item.id}" ${this.item.subFolders !== null ? 
-            (this.item.subFolders.id === item.id ? 'selected' : '') : ''
+          htmlBodyLastChild += `<option value="${item.id}" ${
+            this.item.subFolderId !== 0
+              ? this.item.subFolderId === item.id
+                ? 'selected'
+                : ''
+              : ''
           }>${item.name}</option>`;
         });
         htmlBodyLastChild += `</select>`;
@@ -300,22 +300,19 @@ export default class Client {
       extension.value = this.getExtension(this.item.name);
       this.item.extension = extension.value;
     } else {
-      const subFolders = Array.from(
-        <HTMLOptionsCollection>(
-          document.querySelector('#subFolders').children
-        ),
-      );
-      subFolders.forEach(subFolder => {
-        if (subFolder.selected === true) {
-          if (subFolder.value === 'none') this.item.subFolders = null;
-          else
-            this.item.subFolders = <Folder>(
-              this.folderList.find(
-                folder => folder.id === +subFolder.value,
-              )
-            );
-        }
-      });
+      if (this.folderList.length > 0) {
+        const subFolders = Array.from(
+          <HTMLOptionsCollection>(
+            document.querySelector('#subFolders').children
+          ),
+        );
+        subFolders.forEach(subFolder => {
+          if (subFolder.selected === true) {
+            if (subFolder.value === 'none') this.item.subFolderId = 0;
+            else this.item.subFolderId = +subFolder.value;
+          }
+        });
+      }
     }
 
     if (this.isEdit) this.updateItem();
@@ -338,7 +335,7 @@ export default class Client {
 
   addItem = () => {
     this.httpClient
-      .addItem(this.item)
+      .addItemToAPI(this.item)
       .then(message => {
         this.hideModal();
         alert(message);
@@ -351,7 +348,7 @@ export default class Client {
 
   updateItem = () => {
     this.httpClient
-      .updateItem(this.item)
+      .updateItemToAPI(this.item)
       .then(message => {
         this.hideModal();
         alert(message);
@@ -362,10 +359,10 @@ export default class Client {
       });
   };
 
-  deleteItem = (id: number) => {
+  deleteItem = (id: number, isFile: boolean) => {
     if (confirm('Are you sure to delete this item?')) {
       this.httpClient
-        .removeItem(id)
+        .removeItemToAPI(id, isFile)
         .then(message => {
           alert(message);
         })
