@@ -27,16 +27,3 @@ a {
 button {
   font-family: $fontFamily;
 }
-
-.btn {
-  padding: getSpacing(0.25) getSpacing(0.5);
-  border-radius: getBorderRadius(0.5);
-  width: $widthActionBtn;
-  height: $heightActionBtn;
-  font-size: $fontSizeTextMobile;
-  @include draw-border($defaultWidthBorder, transparent, full);
-
-  &:not(:last-child){
-    margin-right:getSpacing(0.5);
-  }
-}

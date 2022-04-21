@@ -141,35 +141,68 @@
     &-footer {
       @include flex-config;
       justify-content: flex-end;
+    }
+  }
+}
 
-      .btn {
-        &.btn-close {
-          background: $colorPinkGlamour;
-          border: $colorOrangeVille;
+.upload {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  width: fit-content;
+  height: fit-content;
+  left: 10%;
+  top: $spacingTopModal - 4;
+  background: $colorBGNav;
+  padding: getSpacing(2.5);
+  font-size: $fontSizeTextDesktop;
+  border-radius: $defaultBorderRadius;
 
-          &:hover {
-            background: $colorChiGong;
-          }
-        }
+  @media only screen and (max-width: 767.98px) {
+    font-size: $fontSizeTextMobile;
+  }
 
-        &#btnConfirm {
-          background: $colorFadedPoster;
-          border-color: $colorRobinEggBlue;
+  &-form {
+    @include flex-config(column);
 
-          &:hover {
-            background: $colorMintLeaf;
-          }
-        }
+    &-footer {
+      margin-top: $defaultSpacing;
+      align-self: flex-end;
+    }
+  }
 
-        &#btn-add {
-          background: $colorGreenishBlue;
-          border: $colorMintLeaf;
+  @media only screen and (max-width: 767.98px) {
+    font-size: $fontSizeTextMobile;
+  }
+}
 
-          &:hover {
-            background: $colorGreenLandGreen;
-          }
-        }
-      }
+.btn {
+  padding: getSpacing(0.25) getSpacing(0.5);
+  border-radius: getBorderRadius(0.5);
+  width: $widthActionBtn;
+  height: $heightActionBtn;
+  font-size: $fontSizeTextMobile;
+  @include draw-border($defaultWidthBorder, transparent, full);
+
+  &:not(:last-child) {
+    margin-right: getSpacing(0.5);
+  }
+
+  &.btn-close {
+    background: $colorPinkGlamour;
+    border: $colorOrangeVille;
+
+    &:hover {
+      background: $colorChiGong;
+    }
+  }
+
+  &.btn-confirm {
+    background: $colorFadedPoster;
+    border-color: $colorRobinEggBlue;
+
+    &:hover {
+      background: $colorMintLeaf;
     }
   }
 }

@@ -31,6 +31,7 @@ export default class Client {
     this.httpClient.initialItemList();
   }
 
+  // #region ItemList
   getAllItem = async () => {
     document.querySelector('#itemList').innerHTML = '';
     this.itemList = await this.httpClient.getAllItemsFromAPI();
@@ -88,7 +89,9 @@ export default class Client {
       });
     }
   };
+  //#endregion
 
+  // #region Form Modal
   openModal = (
     isFile: boolean,
     isNew: boolean,
@@ -350,16 +353,69 @@ export default class Client {
       .querySelector('#modalFooter #btnConfirm')
       .setAttribute('style', 'cursor: pointer;');
   };
+  // #endregion
 
+  //#region Upload Modal
+  openUpload = () => {
+    document
+      .querySelector('#uploadModal')
+      .setAttribute('style', 'display: block;');
+
+    const btnUpload: HTMLElement = document.querySelector(
+      '#btnUpload',
+    );
+
+    btnUpload.onclick = () => {
+      btnUpload.style.cursor = 'not-allowed';
+      this.confirmUpload();
+    };
+  };
+
+  confirmUpload = () => {
+    const myFile : HTMLInputElement = document.querySelector(
+      '#myFile',
+    );
+    this.item = new CFile();
+    [this.item.name, this.item.extension] = this.splitFileName(
+      myFile.files[0].name
+    );
+    this.item.createdAt = 'A few second ago';
+    this.item.createdBy = document.querySelector(
+      '#username',
+    ).textContent;
+    this.item.modifiedAt = 'Never';
+    this.item.modifiedBy = 'None';
+    this.item.name = `${this.item.name}.${this.item.extension}`;
+    this.addItem();
+  };
+
+  hideUpload = () => {
+    document
+      .querySelector('#uploadModal')
+      .setAttribute('style', 'display: none;');
+      this.reloadUploadBtn();
+  }
+
+  reloadUploadBtn = () => {
+    document
+      .querySelector('#btnUpload')
+      .setAttribute('style', 'cursor: pointer;');
+  }
+  
+  //#endregion
+
+  // #region Method
   addItem = () => {
     this.httpClient
       .addItemToAPI(this.item)
       .then(message => {
+        this.hideUpload();
         this.hideModal();
         alert(message);
       })
       .catch(error => {
         this.reloadModalBtn();
+        this.reloadUploadBtn();
         alert(error);
       });
   };
@@ -409,4 +465,5 @@ export default class Client {
       alert(ex);
     }
   };
+  // #endregion
 }

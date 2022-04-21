@@ -14,6 +14,15 @@ const renderGrid = () => {
   );
   const newFolder: HTMLElement = document.querySelector('#newFolder');
   const newFile: HTMLElement = document.querySelector('#newFile');
+  const uploadModal: HTMLElement = document.querySelector(
+    '#uploadModal',
+  );
+  const closeBtn: HTMLElement = document.querySelector(
+    '.upload .btn-close',
+  );
+  const uploadFile: HTMLElement = document.querySelector(
+    '#uploadFile',
+  );
   const client = new Client();
 
   client.getAllItem();
@@ -30,6 +39,14 @@ const renderGrid = () => {
 
   newFile.onclick = () => {
     client.openModal(true, true, null);
+  };
+
+  closeBtn.onclick = () => {
+    uploadModal.style.display = 'none';
+  };
+
+  uploadFile.onclick = () => {
+    client.openUpload();
   };
 };
 
