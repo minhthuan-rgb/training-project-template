@@ -32,13 +32,13 @@ export default class Client {
   }
 
   getAllItem = async () => {
+    document.querySelector('#itemList').innerHTML = '';
     this.itemList = await this.httpClient.getAllItemsFromAPI();
     this.renderItemList();
   };
 
   renderItemList = () => {
     // const html = items.map ((item) => `html`).join('');
-
     let html = '';
 
     this.itemList.forEach(item => {
@@ -103,13 +103,17 @@ export default class Client {
         this.item.id = 0;
         this.item.name = 'Test Folder';
         this.item.createdAt = 'A few seconds ago';
-        this.item.createdBy = document.querySelector('#username').textContent;
+        this.item.createdBy = document.querySelector(
+          '#username',
+        ).textContent;
         this.item.modifiedAt = 'Nerver';
         this.item.modifiedBy = 'None';
       } else {
         this.isEdit = true;
         this.item = item;
-        this.item.modifiedBy = document.querySelector('#username').textContent;
+        this.item.modifiedBy = document.querySelector(
+          '#username',
+        ).textContent;
         this.item.ModifiedAt = 'A few seconds ago';
       }
 
@@ -148,16 +152,24 @@ export default class Client {
         this.isEdit = false;
         this.item.id = 0;
         this.item.createdAt = 'A few seconds ago';
-        this.item.createdBy = document.querySelector('#username').textContent;;
+        this.item.createdBy = document.querySelector(
+          '#username',
+        ).textContent;
         this.item.modifiedAt = 'Never';
         this.item.modifiedBy = 'None';
-        [this.item.name, this.item.extension] = this.splitFileName('TestFile.xlsx');
+        [this.item.name, this.item.extension] = this.splitFileName(
+          'TestFile.xlsx',
+        );
       } else {
         this.isEdit = true;
         this.item = item;
-        this.item.modifiedBy = document.querySelector('#username').textContent;
+        this.item.modifiedBy = document.querySelector(
+          '#username',
+        ).textContent;
         this.item.modifiedAt = 'A few seconds ago';
-        [this.item.name, this.item.extension] = this.splitFileName(this.item.name);
+        [this.item.name, this.item.extension] = this.splitFileName(
+          this.item.name,
+        );
       }
       htmlBodyLastChild = `<div class="form-group">
                             <label for="extension">Extension</label>
@@ -380,8 +392,11 @@ export default class Client {
   };
 
   splitFileName(fullName: string) {
-    return [fullName.slice(0, fullName.lastIndexOf('.')),fullName.slice(fullName.lastIndexOf('.') + 1)];
-  } 
+    return [
+      fullName.slice(0, fullName.lastIndexOf('.')),
+      fullName.slice(fullName.lastIndexOf('.') + 1),
+    ];
+  }
 
   // function to test async/ await
   getFolderItems = async () => {
