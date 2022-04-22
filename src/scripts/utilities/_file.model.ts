@@ -7,10 +7,10 @@ export default class CFile extends Base {
   constructor(
     id: number = 0,
     name: string = '',
-    createdAt: string = '',
+    createdAt: string = 'A few second ago',
     createdBy: string = '',
-    modifiedAt: string = '',
-    modifiedBy: string = '',
+    modifiedAt: string = 'Never',
+    modifiedBy: string = 'None',
     extension: string = '',
   ) {
     super(id, name, createdAt, createdBy, modifiedAt, modifiedBy);

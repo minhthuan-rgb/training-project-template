@@ -23,10 +23,13 @@ const renderGrid = () => {
   const uploadFile: HTMLElement = document.querySelector(
     '#uploadFile',
   );
+  const btnUpload: HTMLElement = document.querySelector('#btnUpload');
+  const myFile: HTMLInputElement = document.querySelector('#myFile');
   const client = new Client();
 
   client.getAllItem();
 
+  // #region Form Modal
   closeBtns.forEach(btn => {
     btn.onclick = () => {
       modal.style.display = 'none';
@@ -40,7 +43,9 @@ const renderGrid = () => {
   newFile.onclick = () => {
     client.openModal(true, true, null);
   };
+  // #endregion
 
+  // #region Upload Modal
   closeBtn.onclick = () => {
     uploadModal.style.display = 'none';
   };
@@ -48,6 +53,14 @@ const renderGrid = () => {
   uploadFile.onclick = () => {
     client.openUpload();
   };
+
+  btnUpload.setAttribute('disabled', 'true');
+
+  myFile.onchange = () => {
+    if (myFile.files[0]) btnUpload.removeAttribute('disabled');
+    else btnUpload.setAttribute('disabled', 'true');
+  };
+  // #endregion
 };
 
 export default renderGrid;

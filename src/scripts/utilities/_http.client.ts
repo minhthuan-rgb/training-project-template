@@ -188,140 +188,111 @@ export default class HttpClient {
   // #region New
   BASE_URL: string = 'https://localhost:44302/';
 
-  getAllFolders = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        const result = await fetch(
-          `${this.BASE_URL}api/API/get-all-folders`,
-        )
-          .then(res => res.json())
-          .then(res => {
-            return Array.from(res);
-          });
-        if (result) resolve(result);
-        else reject('No Data');
-      }, 1000);
-    });
+  getAllFolders = async () => {
+    const result = await fetch(
+      `${this.BASE_URL}api/API/get-all-folders`,
+    )
+      .then(res => res.json())
+      .then(res => {
+        return Array.from(res);
+      });
+
+    if (result) return result;
+    else throw 'No Data';
   };
 
-  getAllFiles = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        const result = await fetch(
-          `${this.BASE_URL}api/API/get-all-files`,
-        )
-          .then(res => res.json())
-          .then(res => {
-            return Array.from(res);
-          });
-        if (result) resolve(result);
-        else reject('No Data');
-      }, 1000);
-    });
+  getAllFiles = async () => {
+    const result = await fetch(
+      `${this.BASE_URL}api/API/get-all-files`,
+    )
+      .then(res => res.json())
+      .then(res => {
+        return Array.from(res);
+      });
+
+    if (result) return result;
+    else throw 'No Data';
   };
 
   getAllItemsFromAPI = async () => {
-    const itemList: Array<CFile | Folder> = [];
+    const itemList: Array<Folder | CFile> = [];
 
-    this.getAllFolders().then((data: Array<Folder>) => {
+    await this.getAllFolders().then((data: Array<Folder>) => {
       data.forEach(d => itemList.push(d));
     });
 
-    this.getAllFiles().then((data: Array<CFile>) => {
+    await this.getAllFiles().then((data: Array<CFile>) => {
       data.forEach(d => itemList.push(d));
     });
 
-    const mockDelay = async () => {
-      return new Promise(resolve =>
-        setTimeout(() => resolve('Delay'), 3500),
-      );
-    };
-
-    await mockDelay();
     if (itemList) return itemList;
-    else throw 'No Item Found';
+    else throw 'No Data';
   };
 
-  addItemToAPI = (addItem: Folder | CFile) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        const result = await fetch(
-          `${this.BASE_URL}${
-            addItem.hasOwnProperty('extension')
-              ? 'api/API/create-file'
-              : 'api/API/create-folder'
-          }`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(addItem),
-          },
-        )
-          .then(res => res.json())
-          .then(res => {
-            return res;
-          });
+  addItemToAPI = async (addItem: Folder | CFile) => {
+    const result = await fetch(
+      `${this.BASE_URL}${
+        addItem.hasOwnProperty('extension')
+          ? 'api/API/create-file'
+          : 'api/API/create-folder'
+      }`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(addItem),
+      },
+    )
+      .then(res => res.json())
+      .then(res => {
+        return res;
+      });
 
-        if (result === true) resolve('Successfully Added!');
-        else reject('Unsuccessfully Add!');
-      }, 1000);
-    });
+    return result;
   };
 
-  updateItemToAPI = (upItem: Folder | CFile) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        const result = await fetch(
-          `${this.BASE_URL}${
-            upItem.hasOwnProperty('extension')
-              ? 'api/API/update-file'
-              : 'api/API/update-folder'
-          }`,
-          {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(upItem),
-          },
-        )
-          .then(res => res.json())
-          .then(res => {
-            return res;
-          });
+  updateItemToAPI = async (upItem: Folder | CFile) => {
+    const result = await fetch(
+      `${this.BASE_URL}${
+        upItem.hasOwnProperty('extension')
+          ? 'api/API/update-file'
+          : 'api/API/update-folder'
+      }`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(upItem),
+      },
+    )
+      .then(res => res.json())
+      .then(res => {
+        return res;
+      });
 
-        if (result === true) resolve('Successfully Updated!');
-        else reject('Unsuccessfully Update');
-      }, 1000);
-    });
+    return result;
   };
 
-  removeItemToAPI = (id: number, isFile: boolean) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        const result = await fetch(
-          `${this.BASE_URL}${
-            isFile ? 'api/API/delete-file' : 'api/API/delete-folder'
-          }`,
-          {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(id),
-          },
-        )
-          .then(res => res.json())
-          .then(res => {
-            return res;
-          });
-
-        if (result === true) resolve('Successfully Deleled!');
-        else reject('Unsuccessfully Delete!');
-      }, 500);
-    });
+  removeItemToAPI = async (id: number, isFile: boolean) => {
+    const result = await fetch(
+      `${this.BASE_URL}${
+        isFile ? 'api/API/delete-file' : 'api/API/delete-folder'
+      }`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(id),
+      },
+    )
+      .then(res => res.json())
+      .then(res => {
+        return res;
+      });
+    return result;
   };
   // #endregion
 }

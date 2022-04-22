@@ -6,11 +6,11 @@ export default class Folder extends Base {
 
   constructor(
     id: number = 0,
-    name: string = '',
-    createdAt: string = '',
+    name: string = 'Test Folder',
+    createdAt: string = 'A few seconds ago',
     createdBy: string = '',
-    modifiedAt: string = '',
-    modifiedBy: string = '',
+    modifiedAt: string = 'Nerver',
+    modifiedBy: string = 'None',
     subFolderId: number = 0,
   ) {
     super(id, name, createdAt, createdBy, modifiedAt, modifiedBy);

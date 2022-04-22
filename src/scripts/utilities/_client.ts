@@ -103,21 +103,12 @@ export default class Client {
       this.isFile = false;
       if (isNew) {
         this.isEdit = false;
-        this.item.id = 0;
-        this.item.name = 'Test Folder';
-        this.item.createdAt = 'A few seconds ago';
         this.item.createdBy = document.querySelector(
           '#username',
         ).textContent;
-        this.item.modifiedAt = 'Nerver';
-        this.item.modifiedBy = 'None';
       } else {
         this.isEdit = true;
         this.item = item;
-        this.item.modifiedBy = document.querySelector(
-          '#username',
-        ).textContent;
-        this.item.ModifiedAt = 'A few seconds ago';
       }
 
       htmlBodyLastChild = `<div class="form-group">
@@ -153,23 +144,15 @@ export default class Client {
       this.item = new CFile();
       if (isNew) {
         this.isEdit = false;
-        this.item.id = 0;
-        this.item.createdAt = 'A few seconds ago';
         this.item.createdBy = document.querySelector(
           '#username',
         ).textContent;
-        this.item.modifiedAt = 'Never';
-        this.item.modifiedBy = 'None';
         [this.item.name, this.item.extension] = this.splitFileName(
           'TestFile.xlsx',
         );
       } else {
         this.isEdit = true;
         this.item = item;
-        this.item.modifiedBy = document.querySelector(
-          '#username',
-        ).textContent;
-        this.item.modifiedAt = 'A few seconds ago';
         [this.item.name, this.item.extension] = this.splitFileName(
           this.item.name,
         );
@@ -301,18 +284,15 @@ export default class Client {
     const createdBy: HTMLInputElement = document.querySelector(
       '#createdBy',
     );
-    const modifiedAt: HTMLInputElement = document.querySelector(
-      '#modifiedAt',
-    );
-    const modifiedBy: HTMLInputElement = document.querySelector(
-      '#modifiedBy',
-    );
+
     this.item.id = +itemId.value;
     this.item.name = name.value;
     this.item.createdAt = createdAt.value;
     this.item.createdBy = createdBy.value;
-    this.item.modifiedAt = modifiedAt.value;
-    this.item.modifiedBy = modifiedBy.value;
+    this.item.modifiedAt = 'A few seconds ago';
+    this.item.modifiedBy = document.querySelector(
+      '#username',
+    ).textContent;
 
     if (this.isFile) {
       const extension: HTMLInputElement = document.querySelector(
@@ -366,25 +346,22 @@ export default class Client {
     );
 
     btnUpload.onclick = () => {
-      btnUpload.style.cursor = 'not-allowed';
+      btnUpload.setAttribute('disabled', 'true');
       this.confirmUpload();
     };
   };
 
   confirmUpload = () => {
-    const myFile : HTMLInputElement = document.querySelector(
+    const myFile: HTMLInputElement = document.querySelector(
       '#myFile',
     );
     this.item = new CFile();
     [this.item.name, this.item.extension] = this.splitFileName(
-      myFile.files[0].name
+      myFile.files[0].name,
     );
-    this.item.createdAt = 'A few second ago';
     this.item.createdBy = document.querySelector(
       '#username',
     ).textContent;
-    this.item.modifiedAt = 'Never';
-    this.item.modifiedBy = 'None';
     this.item.name = `${this.item.name}.${this.item.extension}`;
     this.addItem();
   };
@@ -393,55 +370,52 @@ export default class Client {
     document
       .querySelector('#uploadModal')
       .setAttribute('style', 'display: none;');
-      this.reloadUploadBtn();
-  }
+    (<HTMLInputElement>document.querySelector('#myFile')).value = '';
+    this.reloadUploadBtn();
+  };
 
   reloadUploadBtn = () => {
     document
       .querySelector('#btnUpload')
-      .setAttribute('style', 'cursor: pointer;');
-  }
-  
+      .removeAttribute('disabled');
+  };
+
   //#endregion
 
   // #region Method
-  addItem = () => {
-    this.httpClient
-      .addItemToAPI(this.item)
-      .then(message => {
+  addItem = async () => {
+    await this.httpClient.addItemToAPI(this.item).then(message => {
+      if (message === true) {
         this.hideUpload();
         this.hideModal();
-        alert(message);
-      })
-      .catch(error => {
+        alert('Successfully Added');
+      } else {
         this.reloadModalBtn();
         this.reloadUploadBtn();
-        alert(error);
-      });
+        alert('Unsuccessfully Add');
+      }
+    });
   };
 
-  updateItem = () => {
-    this.httpClient
-      .updateItemToAPI(this.item)
-      .then(message => {
+  updateItem = async () => {
+    await this.httpClient.updateItemToAPI(this.item).then(message => {
+      if (message === true) {
         this.hideModal();
-        alert(message);
-      })
-      .catch(error => {
+        alert('Successfully Updated');
+      } else {
         this.reloadModalBtn();
-        alert(error);
-      });
+        alert('Unsuccessfully Update');
+      }
+    });
   };
 
-  deleteItem = (id: number, isFile: boolean) => {
+  deleteItem = async (id: number, isFile: boolean) => {
     if (confirm('Are you sure to delete this item?')) {
-      this.httpClient
+      await this.httpClient
         .removeItemToAPI(id, isFile)
         .then(message => {
-          alert(message);
-        })
-        .catch(error => {
-          alert(error);
+          if (message === true) alert('Successfully Deleted');
+          else alert('Unsuccessfully Delete');
         });
       this.getAllItem();
     }
